@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en" data-tone="dawn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JINIS × airweave</title>
+<meta name="description" content="Rooted in Japan. Ready for the World. How Jinseki International School and airweave support everyday boarding life.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/jinis_boarding_facility_img02.webp">
+<style>
+/* ───────── Design tokens ───────── */
+:root{
+  /* palette — anchored to JINIS (#1B1B1B ink, white, Montserrat / Noto Sans JP) */
+  --paper:#F5F2EA; --paper-2:#FBFAF7; --ivory:#EFEADF;
+  --ink:#1B1B1B; --ink-soft:#55524C;
+  --navy:#07182C; --navy-2:#0C2340; --deep:#040E1C;
+  --bluegrey:#8FA3B5; --wood:#B89B78; --dusk:#E8D9C6;
+  --jinis-blue:#3EA2F3; --jinis-yellow:#E7D13A;
+  --serif:"Cormorant Garamond","Noto Serif JP",Georgia,serif;
+  --sans:"Noto Sans JP","Helvetica Neue",Arial,sans-serif;
+  --label:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --max:1280px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  /* tone-driven (the 24-hour light system) */
+  --bg:var(--paper); --fg:var(--ink); --fg-soft:var(--ink-soft); --rule:rgba(27,27,27,.14);
+}
+html[data-tone="day"]  {--bg:var(--paper-2)}
+html[data-tone="dusk"] {--bg:var(--dusk)}
+html[data-tone="night"]{--bg:var(--navy); --fg:#ECE8DF; --fg-soft:#A9B4C2; --rule:rgba(236,232,223,.16)}
+html[data-tone="deep"] {--bg:var(--deep); --fg:#ECE8DF; --fg-soft:#98A6B8; --rule:rgba(236,232,223,.14)}
+html[data-tone="dawn2"]{--bg:#EEE6DC}
+html[data-tone="world"]{--bg:var(--paper)}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:300 16px/1.85 var(--sans);letter-spacing:.01em;
+  transition:background-color 1.4s var(--ease),color 1.4s var(--ease);overflow-x:hidden}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+h1,h2,h3{font-weight:400;margin:0}
+p{margin:0 0 1em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+.label{font:500 11px/1.4 var(--label);letter-spacing:.24em;text-transform:uppercase;color:var(--fg-soft)}
+.serif{font-family:var(--serif)}
+.display{font:400 clamp(44px,7.4vw,112px)/.98 var(--serif);letter-spacing:-.01em}
+.h2{font:400 clamp(34px,4.6vw,68px)/1.06 var(--serif);letter-spacing:-.005em}
+.h3{font:400 clamp(24px,2.4vw,34px)/1.2 var(--serif)}
+.lede{font-size:clamp(17px,1.35vw,19px);max-width:34em;color:var(--fg-soft)}
+.stack>*+*{margin-top:1.4rem}
+section{position:relative}
+.sec{padding:clamp(96px,14vw,200px) 0}
+.num{font:500 11px var(--label);letter-spacing:.24em;color:var(--fg-soft);display:flex;gap:14px;align-items:center}
+.num::after{content:"";height:1px;width:48px;background:currentColor;opacity:.5}
+.skip{position:absolute;left:-999px;top:8px;background:#fff;color:#000;padding:8px 12px;z-index:100}
+.skip:focus{left:8px}
+:focus-visible{outline:2px solid var(--jinis-blue);outline-offset:3px}
+
+/* ───────── Reveal ───────── */
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv.d1{transition-delay:.12s}.js .rv.d2{transition-delay:.24s}.js .rv.d3{transition-delay:.36s}.js .rv.d4{transition-delay:.48s}
+
+/* ───────── Chrome: top bar + clock ───────── */
+.bar{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+  padding:16px var(--gutter);color:var(--fg);mix-blend-mode:normal;pointer-events:none;transition:color 1.4s var(--ease)}
+.bar>*{pointer-events:auto}
+.mark{font:600 12px var(--label);letter-spacing:.28em;text-decoration:none}
+.mark i{font-style:normal;font-weight:400;opacity:.6;margin:0 .5em}
+.bar.over{color:#fff}
+.notes-toggle{font:500 10px var(--label);letter-spacing:.2em;text-transform:uppercase;background:none;border:1px solid currentColor;
+  color:inherit;border-radius:99px;padding:7px 12px;cursor:pointer;opacity:.75}
+.clock{position:fixed;left:var(--gutter);bottom:22px;z-index:50;font:500 11px var(--label);letter-spacing:.2em;color:var(--fg);
+  display:flex;gap:12px;align-items:center;transition:color 1.4s var(--ease)}
+.clock b{font:400 22px/1 var(--serif);letter-spacing:.02em;min-width:3.2em}
+.clock .dial{width:26px;height:26px;border-radius:50%;border:1px solid currentColor;position:relative;opacity:.8}
+.clock .dial::after{content:"";position:absolute;left:50%;top:3px;width:1px;height:10px;background:currentColor;transform-origin:50% 100%;transform:rotate(var(--rot,0deg));transition:transform 1.2s var(--ease)}
+.clock.over{color:#fff}
+.note{display:none}
+.show-notes .note{display:inline-block;font:500 10px/1.5 var(--label);letter-spacing:.06em;text-transform:none;
+  background:var(--jinis-yellow);color:#1b1b1b;padding:2px 8px;border-radius:3px;margin:6px 0;vertical-align:middle;max-width:46em}
+
+/* ───────── 01 Hero ───────── */
+.hero{height:100svh;min-height:620px;position:relative;overflow:hidden;color:#fff;display:flex;align-items:flex-end}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:heroIn 3.2s var(--ease) forwards}
+@keyframes heroIn{to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,24,44,.55) 0%,rgba(7,24,44,.15) 60%,rgba(7,24,44,0) 100%),linear-gradient(180deg,rgba(7,24,44,.35) 0%,rgba(7,24,44,0) 30%,rgba(7,24,44,.6) 100%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-bottom:clamp(56px,9vh,110px)}
+.hero .label{color:rgba(255,255,255,.85)}
+.hero .display{margin:.25em 0 .3em;max-width:9em}
+.hero p{font-size:clamp(16px,1.4vw,19px);max-width:28em;color:rgba(255,255,255,.9)}
+.scrollcue{position:absolute;right:var(--gutter);bottom:clamp(56px,9vh,110px);z-index:2;font:500 10px var(--label);letter-spacing:.3em;writing-mode:vertical-rl;color:rgba(255,255,255,.8)}
+.scrollcue::after{content:"";display:block;width:1px;height:56px;background:currentColor;margin:14px auto 0;animation:cue 2.4s ease-in-out infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ───────── 02 24 Hours ───────── */
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:end;margin-bottom:clamp(64px,9vw,120px)}
+.tl{position:relative;max-width:1100px;margin:0 auto}
+.tl-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--rule)}
+.tl-fill{position:absolute;left:50%;top:0;width:1px;height:0;background:var(--fg);transition:height .2s linear}
+.tl-item{display:grid;grid-template-columns:1fr 120px 1fr;align-items:center;margin-bottom:clamp(56px,8vw,110px)}
+.tl-item:last-child{margin-bottom:0}
+.tl-time{grid-column:2;text-align:center;position:relative;z-index:1}
+.tl-time span{display:inline-block;background:var(--bg);padding:10px 0;font:400 30px/1 var(--serif);transition:background-color 1.4s var(--ease)}
+.tl-media{grid-column:1;padding-right:clamp(16px,3vw,48px)}
+.tl-text{grid-column:3;padding-left:clamp(16px,3vw,48px)}
+.tl-item:nth-child(even) .tl-media{grid-column:3;grid-row:1;padding:0 0 0 clamp(16px,3vw,48px)}
+.tl-item:nth-child(even) .tl-text{grid-column:1;grid-row:1;padding:0 clamp(16px,3vw,48px) 0 0;text-align:right}
+.tl-item:nth-child(even) .tl-text .lede{margin-left:auto}
+.tl-media figure{margin:0;aspect-ratio:16/10;overflow:hidden;background:var(--ivory)}
+.tl-media img{width:100%;height:100%;object-fit:cover}
+.tl-word{font:500 12px var(--label);letter-spacing:.3em;margin-bottom:.6em}
+.tl-text .h3{margin-bottom:.4em}
+.tl-text .lede{font-size:15px}
+.tl-night .tl-media figure{background:var(--navy)}.tl-night .tl-media figure>img{filter:brightness(.55) saturate(.7)}
+.tl-coda{text-align:center;margin-top:clamp(56px,8vw,110px)}
+.tl-coda p{font:italic 400 clamp(22px,2.2vw,30px)/1.4 var(--serif);max-width:24em;margin:0 auto}
+
+/* ───────── 03 Learn / Dine / Rest ───────── */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:0;min-height:88vh}
+.tri article{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;min-height:70vh}
+.tri article img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.6s var(--ease)}
+.tri article:hover img{transform:scale(1.03)}
+.tri article::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55))}
+.tri .rest::before{background:linear-gradient(180deg,rgba(7,24,44,.45),rgba(4,14,28,.92))}
+.tri .rest img{filter:saturate(.6) brightness(.8)}
+.tri .cap{position:relative;z-index:2;padding:clamp(24px,3vw,44px)}
+.tri .cap .label{color:rgba(255,255,255,.8)}
+.tri .cap h3{font:400 clamp(40px,4.8vw,72px)/1 var(--serif);margin:.15em 0 .3em}
+.tri .cap p{font-size:15px;max-width:22em;color:rgba(255,255,255,.88);margin:0}
+.tri-foot{text-align:center;padding:clamp(48px,6vw,80px) var(--gutter) 0}
+.tri-foot p{font:400 clamp(20px,2vw,28px)/1.5 var(--serif);margin:0}
+.tri-foot .arrow{opacity:.5;margin:0 .6em}
+
+/* ───────── 04 Night / products ───────── */
+.night .intro{align-items:start}
+.objects{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.4vw,36px);margin-top:clamp(40px,6vw,80px)}
+.obj{margin:0}
+.obj .plinth{position:relative;aspect-ratio:1;background:radial-gradient(120% 90% at 50% 30%,#F6F3EC 0%,#E6E0D4 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:2px}
+.obj .plinth img{width:86%;height:86%;object-fit:contain;mix-blend-mode:multiply}
+.obj figcaption{padding-top:18px}
+.obj .h3{font-size:clamp(22px,2vw,28px)}
+.obj p{font-size:14px;color:var(--fg-soft);margin:.4em 0 0}
+.moon{position:absolute;right:var(--gutter);top:clamp(80px,10vw,140px);width:clamp(60px,7vw,96px);aspect-ratio:1;border-radius:50%;
+  box-shadow:inset -14px 6px 0 0 #ECE8DF;opacity:.85;transform:rotate(-20deg)}
+.creds{display:flex;gap:28px;flex-wrap:wrap;margin-top:28px;font:500 11px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--fg-soft)}
+.creds span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--bluegrey);margin-right:10px;vertical-align:middle}
+
+/* ───────── 05 Customisation ───────── */
+.custom{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);align-items:center}
+.diagram{background:rgba(236,232,223,.04);border:1px solid var(--rule);padding:clamp(20px,3vw,40px)}
+.diagram svg{width:100%;height:auto;display:block;overflow:visible}
+.zone rect{transition:fill .6s var(--ease),height .6s var(--ease),y .6s var(--ease)}
+.zones-ctl{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.zbtn{font:500 11px/1.4 var(--label);letter-spacing:.14em;text-transform:uppercase;background:none;color:var(--fg);border:1px solid var(--rule);
+  padding:14px 10px;cursor:pointer;text-align:left;transition:border-color .3s,background .3s}
+.zbtn:hover{border-color:var(--fg)}
+.zbtn small{display:block;font:400 18px/1.2 var(--serif);letter-spacing:0;text-transform:none;margin-top:6px;color:var(--fg-soft)}
+.zbtn[aria-pressed="true"]{background:rgba(236,232,223,.08);border-color:var(--fg)}
+.zbtn[aria-pressed="true"] small{color:var(--fg)}
+.pillar{fill:#B89B78}.pillar-edge{fill:#9C7F5E}.floor{stroke:var(--rule);stroke-width:1.2}
+.kid{fill:#9DB5DA;transform-box:view-box;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+#marks line{stroke:#3B2A18;stroke-width:1.6;opacity:.55}#marks text{font:500 14px Montserrat,sans-serif;fill:currentColor;opacity:.55}
+#marks .now line{stroke:#ECE8DF;stroke-width:2.6;opacity:1}#marks .now text{opacity:1;font-weight:600}
+#marks g{transition:opacity .4s}
+.mk line{stroke:#ECE8DF;stroke-width:1.2;opacity:.45}.mk text{font:500 9px Montserrat,sans-serif;letter-spacing:.1em;fill:currentColor;opacity:.45}
+.mk.on line{opacity:1;stroke-width:2.4}.mk.on text{opacity:1}
+#kid{transition:none}
+.grade-ctl{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-top:18px}
+.grade-ctl .label{margin:0;color:var(--fg)}
+.grade-ctl input{width:100%;accent-color:#9DB5DA}
+.grade-ctl output{font:400 18px var(--serif);min-width:8.5em;text-align:right}
+.diag-status{font-size:13px;color:var(--fg-soft);margin-top:14px;min-height:1.6em}
+.grow{margin-top:2.2rem;padding-top:1.6rem;border-top:1px solid var(--rule);font:italic 400 clamp(20px,1.8vw,26px)/1.5 var(--serif)}
+
+/* ───────── 06 Boarding features ───────── */
+.feat-head{display:grid;grid-template-columns:7fr 5fr;gap:clamp(32px,6vw,96px);align-items:end;margin-bottom:clamp(48px,6vw,80px)}
+.macro{aspect-ratio:16/12;overflow:hidden;background:#d8d6d2}
+.macro img{width:100%;height:100%;object-fit:cover}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule)}
+.feat{padding:28px clamp(12px,2vw,28px) 0 0;border-right:1px solid var(--rule);margin-right:clamp(12px,2vw,28px)}
+.feat:last-child{border-right:0;margin-right:0}
+.feat .label{color:var(--fg)}
+.feat-img{width:100%;aspect-ratio:16/6;object-fit:cover;margin-bottom:18px}
+.feat .h3{font-size:clamp(22px,2vw,28px);margin:.7em 0 .4em}
+.feat p{font-size:14px;color:var(--fg-soft);margin:0}
+.feat .why{display:block;margin-top:14px;font:500 10px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--wood)}
+
+/* ───────── 07 Japan ───────── */
+.japan-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(80px,auto);gap:clamp(8px,1.2vw,16px)}
+.jp{margin:0;overflow:hidden;position:relative;background:var(--ivory)}
+.jp img{width:100%;height:100%;object-fit:cover}
+.jp figcaption{position:absolute;left:12px;bottom:10px;font:500 10px var(--label);letter-spacing:.2em;text-transform:uppercase;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.jp1{grid-column:1/6;grid-row:span 4}
+.jp2{grid-column:6/9;grid-row:span 2}
+.jp3{grid-column:9/13;grid-row:span 3}
+.jp4{grid-column:6/9;grid-row:span 2}
+.jp5{grid-column:9/13;grid-row:span 1;background:none}
+.words{display:flex;flex-wrap:wrap;gap:10px 26px;margin:clamp(40px,5vw,64px) 0}
+.words span{font:400 clamp(18px,1.6vw,22px)/1.3 var(--serif);white-space:nowrap}
+.words span i{font-style:normal;font-family:"Noto Serif JP",serif;font-size:.8em;color:var(--fg-soft);margin-left:.4em}
+.lived{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,96px);margin-top:clamp(64px,8vw,120px);align-items:start}
+.poem p{font:400 clamp(20px,1.8vw,25px)/1.55 var(--serif);margin:0 0 .25em}
+.poem p.lead{color:var(--fg-soft)}
+.big-quote{font:400 clamp(34px,4.2vw,60px)/1.1 var(--serif)}
+
+/* ───────── 08 World ───────── */
+.world{text-align:center}
+.mapbox{position:relative;max-width:1180px;margin:clamp(40px,5vw,72px) auto 0}
+.mapbox svg{width:100%;height:auto;display:block}
+.dots{stroke:var(--bluegrey);stroke-width:2.6;stroke-linecap:round;opacity:.55}
+.arc{fill:none;stroke:var(--navy);stroke-width:1.2;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 2.6s var(--ease)}
+.in .arc{stroke-dashoffset:0}
+.arc:nth-of-type(2){transition-delay:.25s}.arc:nth-of-type(3){transition-delay:.5s}.arc:nth-of-type(4){transition-delay:.75s}.arc:nth-of-type(5){transition-delay:1s}.arc:nth-of-type(6){transition-delay:1.25s}
+.pin{fill:var(--paper);stroke:var(--navy);stroke-width:1.2;opacity:0;transition:opacity .8s 2s}
+.in .pin{opacity:1}
+.home{fill:var(--navy)}
+.home-ring{fill:none;stroke:var(--navy);opacity:.4;transform-origin:center;transform-box:fill-box;animation:ring 3s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.5}to{transform:scale(3.4);opacity:0}}
+.maplbl{font:500 10.5px var(--label);letter-spacing:.16em;fill:var(--ink-soft);text-transform:uppercase}
+.maplbl.home-l{fill:var(--navy);font-weight:600}
+.cascade{margin:clamp(48px,6vw,80px) auto 0;font:400 clamp(26px,3vw,44px)/1.25 var(--serif)}
+.cascade span{display:block}
+.cascade .pause{height:clamp(40px,6vw,80px)}
+
+/* ───────── 09 Portable ───────── */
+.home-sec{background:#EEE6DC}
+.port{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(12px,2vw,28px);margin:clamp(48px,6vw,80px) 0}
+.port figure{margin:0}
+.port .ph{aspect-ratio:1;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.port .ph img{width:92%;height:92%;object-fit:contain}
+.port figcaption{display:flex;gap:14px;align-items:baseline;padding-top:16px}
+.port figcaption b{font:400 32px/1 var(--serif)}
+.port figcaption span{font-size:14px;color:var(--fg-soft)}
+.port-copy{display:grid;grid-template-columns:7fr 5fr;gap:clamp(32px,6vw,96px);align-items:start}
+.facts{border-top:1px solid var(--rule)}
+.facts div{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);font-size:14px}
+.facts dt{font:500 11px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--fg-soft)}
+.facts dd{margin:0;text-align:right}
+.triple{font:400 clamp(30px,3.6vw,54px)/1.15 var(--serif);margin:clamp(56px,7vw,100px) 0 0;text-align:center}
+.triple span{display:inline-block;margin:0 .35em}
+.triple em{font-style:italic;color:var(--wood)}
+
+/* ───────── 10 Parallel ───────── */
+.parallel{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(24px,5vw,80px);align-items:center;text-align:center}
+.pcol .label{color:var(--fg)}
+.pcol .h3{margin:.7em 0 .2em}
+.pcol .route{font:500 11px var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);margin-top:18px}
+.pcol .route b{display:block;font:400 26px/1.3 var(--serif);letter-spacing:0;text-transform:none;color:var(--fg)}
+.pcenter{font:400 clamp(30px,3.4vw,50px)/1.1 var(--serif);padding:0 clamp(8px,2vw,24px);border-left:1px solid var(--rule);border-right:1px solid var(--rule)}
+
+/* ───────── 11 Final ───────── */
+.final{min-height:100svh;position:relative;color:#fff;display:flex;align-items:center;overflow:hidden}
+.final>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,24,44,.62),rgba(7,24,44,.12) 70%)}
+.final .wrap{position:relative;z-index:2;width:100%}
+.final .h2{max-width:13em;margin:.4em 0 .5em}
+.final .sign{font:italic 400 clamp(20px,2vw,28px)/1.4 var(--serif);opacity:.92}
+.ctas{display:flex;gap:28px;margin-top:48px;flex-wrap:wrap}
+.ctas a{font:500 11px var(--label);letter-spacing:.24em;text-transform:uppercase;text-decoration:none;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.6)}
+.ctas a:hover{border-color:#fff}
+footer{padding:40px var(--gutter);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:500 10px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--fg-soft);background:var(--bg)}
+
+
+/* ───────── v2: airweave presence ───────── */
+:root{--aw:#1E3A6E}
+html[data-tone="night"],html[data-tone="deep"]{--aw:#9DB5DA}
+.tl-media figure{position:relative;overflow:visible}
+.tl-media figure>img{overflow:hidden}
+.inset{position:absolute;right:-18px;bottom:-22px;width:clamp(84px,9vw,124px);aspect-ratio:1;background:#fff;border-radius:50%;box-shadow:0 10px 30px rgba(7,24,44,.18);overflow:hidden;display:flex;align-items:center;justify-content:center;z-index:2}
+.inset img{width:84%;height:84%;object-fit:contain}
+.tl-item:nth-child(even) .inset{right:auto;left:-18px}
+@media (max-width:900px){.inset{right:10px;bottom:-18px}.tl-item:nth-child(even) .inset{left:auto;right:10px}}
+.wm{display:inline-flex;align-items:center;gap:.9em}
+.wm-j{font:600 1em var(--label);letter-spacing:.28em}
+.wm-a{font:500 1.06em var(--sans);letter-spacing:.02em;text-transform:none}
+.wm-x{font-weight:300;opacity:.6}
+.lockup{display:flex;align-items:center;gap:26px;color:#fff;margin-bottom:30px}
+.lockup .logo-j{height:52px;width:auto}.lockup .logo-a{height:27px;width:auto}
+.hero .lockup img{filter:brightness(0) invert(1)}
+.logos{display:flex;align-items:center;gap:12px}.logos .logo-j{height:26px;width:auto}.logos .logo-a{height:14px;width:auto}
+.bar.over .logos img{filter:brightness(0) invert(1)}
+html[data-tone="night"] .bar .logos img,html[data-tone="deep"] .bar .logos img{filter:brightness(0) invert(1)}
+.lockup .wm-j{font-size:17px}.lockup .wm-a{font-size:20px}
+.lockup .div{width:1px;height:34px;background:rgba(255,255,255,.55)}
+.collab{font:500 11px var(--label);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.85);margin:0 0 1.2em}
+.hero .display{position:relative;padding-bottom:.28em}
+.hero .display::after{content:"";position:absolute;left:0;bottom:0;width:88px;height:2px;background:#9DB5DA}
+.hero .sub2{font-size:15px!important;color:rgba(255,255,255,.78)!important;margin-top:.4em}
+/* photo-to-replace tag (always visible in draft) */
+.swap-wrap{position:relative}
+.swap{position:absolute;z-index:3;left:12px;top:12px;max-width:calc(100% - 24px);font:600 9.5px/1.45 var(--label);letter-spacing:.12em;text-transform:uppercase;
+  color:#1b1b1b;background:rgba(231,209,58,.94);padding:6px 9px;border-radius:2px;pointer-events:none}
+.swap b{font-weight:700}
+.swap span{display:block;font-weight:500;letter-spacing:.04em;text-transform:none;font-size:10.5px;margin-top:2px}
+.hide-swaps .swap{display:none}
+.hero .swap,.final .swap{top:76px;left:auto;right:var(--gutter);max-width:300px}
+/* partnership band */
+.partner{padding:clamp(80px,10vw,140px) 0;border-bottom:1px solid var(--rule)}
+.partner-grid{display:grid;grid-template-columns:6fr 6fr;gap:clamp(32px,6vw,96px);align-items:start}
+.partner .lockup{color:var(--fg);margin:0 0 34px}
+.partner .lockup .div{background:var(--rule)}
+.pfacts{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.pfacts li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:20px 0;border-bottom:1px solid var(--rule)}
+.pfacts li b{font:400 30px/1 var(--serif);color:var(--aw)}
+.pfacts li p{margin:0;font-size:15px}
+.pfacts li small{display:block;color:var(--fg-soft);font-size:13px;margin-top:4px}
+/* airweave touchpoint tags on the timeline */
+.aw-tag{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font:500 10.5px var(--label);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--aw);border:1px solid currentColor;border-radius:99px;padding:6px 12px 6px 8px}
+.aw-tag::before{content:"";width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff 0 18%,transparent 19%),repeating-linear-gradient(45deg,currentColor 0 1px,transparent 1px 3px);opacity:.85}
+.tl-item:nth-child(even) .tl-text .aw-tag{flex-direction:row}
+.aw-line{display:block;font:italic 400 19px/1.4 var(--serif);color:var(--fg);margin-top:.4em}
+.clock .aw{font:500 10px var(--label);letter-spacing:.16em;opacity:.75;display:none}
+.clock.on-aw .aw{display:inline}
+.tri .rest .with{display:block;font:500 11px var(--label);letter-spacing:.24em;text-transform:uppercase;color:#9DB5DA;margin-top:12px}
+@media (max-width:900px){.partner-grid{grid-template-columns:1fr}.lockup{gap:16px}.lockup .logo-j{height:40px}.lockup .logo-a{height:21px}.hero .swap{left:var(--gutter);right:auto}}
+@media (max-width:560px){.grade-ctl{grid-template-columns:1fr auto}.grade-ctl input{grid-column:1/-1;grid-row:2}.logos{gap:8px}.logos .logo-j{height:20px}.logos .logo-a{height:11px}.logos .wm-x{display:none}.notes-toggle{padding:6px 10px;font-size:9px}}
+
+
+/* ───────── v4 (21 Oct feedback): philosophy-led story ───────── */
+.hero .hero-lockup{margin-bottom:22px}.hero .hero-lockup .logo-j{height:64px}
+.partner-line{display:flex;align-items:center;gap:14px;margin-top:2.2em!important;font:500 10.5px var(--label)!important;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.82)!important}
+.partner-line img{height:21px;width:auto;filter:brightness(0) invert(1)}
+.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--rule);margin:clamp(40px,5vw,72px) 0 clamp(56px,7vw,96px)}
+.pillar-card{padding:26px 22px 8px 0;border-right:1px solid var(--rule);margin-right:22px;min-width:0}
+.pillar-card:last-child{border-right:0;margin-right:0}
+.pillar-card .label{color:var(--fg)}
+.jp-word{font:400 26px/1.2 "Noto Serif JP",serif;margin:.55em 0 .5em;color:var(--wood)}
+.pillar-card p:last-child{font-size:14px;line-height:1.7;color:var(--fg-soft);margin:0}
+.values{border-top:1px solid var(--fg);margin-top:clamp(40px,5vw,72px)}
+.vrow{display:grid;grid-template-columns:3fr 4fr 4fr;gap:clamp(16px,3vw,48px);padding:24px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.vrow .h3{font-size:clamp(20px,1.8vw,26px)}
+.vrow p{margin:0;font-size:15px;line-height:1.7}
+.vrow p:last-child{color:var(--aw)}
+.vhead{padding:14px 0}
+.practice{display:grid;grid-template-columns:5fr 4fr 4fr;gap:clamp(16px,2vw,28px);margin-top:clamp(56px,7vw,100px);align-items:start}
+.practice figure{margin:0;min-width:0}.practice img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.practice figcaption{font:500 10px var(--label);letter-spacing:.16em;text-transform:uppercase;color:var(--fg-soft);margin-top:10px}
+.practice-text{min-width:0}.practice-text .pfacts{margin-top:14px}
+.photo-credit{font-size:12px;color:var(--fg-soft);margin-top:14px}
+.school-words{margin:clamp(56px,7vw,100px) 0 0;border:1px dashed var(--rule);padding:clamp(24px,4vw,48px);text-align:center}
+.school-words blockquote{margin:0}.school-words blockquote p{font:italic 400 clamp(22px,2.4vw,32px)/1.4 var(--serif);color:var(--fg-soft);margin:.6em auto;max-width:24em}
+.school-words figcaption{font-size:13px;color:var(--fg-soft)}
+.tl-phase{position:relative;z-index:1;text-align:center;margin:0 auto clamp(44px,6vw,72px);max-width:440px;background:var(--bg);padding:16px 0;transition:background-color 1.4s var(--ease)}
+.tl-phase .label{color:var(--fg)}.tl-phase p{font:italic 400 clamp(20px,1.8vw,24px)/1.3 var(--serif);margin:.35em 0 0}
+.craft{display:grid;grid-template-columns:6fr 6fr;gap:clamp(32px,6vw,96px);align-items:center;margin:clamp(80px,10vw,150px) 0 clamp(40px,5vw,64px)}
+.voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2vw,28px)}
+.voice{margin:0;border:1px solid var(--rule);padding:clamp(22px,3vw,36px);display:flex;flex-direction:column;gap:14px;min-height:300px}
+.voice.pending{border-style:dashed}
+.voice .label{color:var(--fg)}
+.voice h3{font:400 clamp(21px,1.9vw,26px)/1.3 var(--serif);margin:0}
+.voice p{margin:0;font-size:14px;color:var(--fg-soft)}
+.voice blockquote{margin:0;font:400 22px/1.45 var(--serif)}
+.voice .who{margin-top:auto;font-size:13px;color:var(--fg-soft)}
+.voice .status{margin-top:auto;font:500 10px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--wood)}
+.voice video,.voice img{width:100%;aspect-ratio:16/10;object-fit:cover}
+.future{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:clamp(56px,7vw,100px);padding-top:32px}
+.future .h3{max-width:28em;margin-top:.5em}
+.btn-line{font:500 11px var(--label);letter-spacing:.22em;text-transform:uppercase;text-decoration:none;border:1px solid var(--fg);padding:14px 22px;white-space:nowrap}
+.btn-line:hover{background:var(--fg);color:var(--bg)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.chip{font:500 10.5px var(--label);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--rule);background:none;color:var(--fg);padding:9px 14px;border-radius:99px;cursor:pointer}
+.chip[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.stories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,22px);align-items:start}
+.story{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.story .thumb{aspect-ratio:4/5;background:var(--ivory);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.story.vertical .thumb{aspect-ratio:9/16}
+.story .thumb img,.story .thumb video,.story .thumb iframe{width:100%;height:100%;object-fit:cover;border:0}
+.story.pending .thumb{background:repeating-linear-gradient(45deg,rgba(184,155,120,.14) 0 10px,transparent 10px 20px);border:1px dashed var(--rule)}
+.story.pending .thumb span{font:500 10px var(--label);letter-spacing:.16em;text-transform:uppercase;color:var(--fg-soft);text-align:center;padding:12px}
+.story .cat{font:500 10px var(--label);letter-spacing:.16em;text-transform:uppercase;color:var(--fg-soft)}
+.story h3{font:400 19px/1.3 var(--serif);margin:0}.story p{margin:0;font-size:13px;color:var(--fg-soft)}
+.story a{text-decoration:none;color:inherit}
+.play{position:absolute;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.play::after{content:"";position:absolute;left:22px;top:17px;border-left:14px solid #07182C;border-top:10px solid transparent;border-bottom:10px solid transparent}
+@media (max-width:1100px){.pillars{grid-template-columns:repeat(3,minmax(0,1fr))}.pillar-card:nth-child(3){border-right:0;margin-right:0}.stories{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){
+  .pillars{grid-template-columns:1fr 1fr}.pillar-card{border-right:0;margin-right:0;border-bottom:1px solid var(--rule);padding:22px 12px 22px 0}
+  .vrow{grid-template-columns:1fr;gap:6px}.vhead{display:none}
+  .vrow p[role=cell]::before{display:block;font:500 9.5px var(--label);letter-spacing:.2em;text-transform:uppercase;color:var(--fg-soft);margin:10px 0 2px}
+  .vrow p[role=cell]:nth-of-type(1)::before{content:"At JINIS"}.vrow p[role=cell]:nth-of-type(2)::before{content:"From airweave"}
+  .practice,.craft{grid-template-columns:1fr}
+  .tl-phase{text-align:left;max-width:none;margin-left:0;padding-left:44px}
+  .voices{grid-template-columns:1fr}.voice{min-height:0}
+  .stories{grid-template-columns:1fr 1fr}
+}
+@media (max-width:560px){.pillars{grid-template-columns:1fr}.hero .hero-lockup{gap:14px}.hero .hero-lockup .logo-j{height:40px}.hero .hero-lockup .logo-a{height:20px}.hero .hero-lockup .div{height:26px}}
+
+
+/* lean v5: science + on-site words */
+.words-on-site li{grid-template-columns:96px 1fr}
+.words-on-site li b{font-size:22px;color:var(--aw)}
+.words-on-site small{font-style:italic}
+.sci-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2.4vw,36px)}
+.sci-card{border-top:1px solid var(--fg);padding-top:24px;min-width:0}
+.sci-card .label{color:var(--fg)}
+.sci-card .sci-big{font:400 clamp(40px,4.6vw,64px)/1 var(--serif);margin:.35em 0 .3em;color:var(--aw)}
+.sci-card>p{font-size:15px}
+.sci-list{margin:0 0 1em;padding-left:1.1em;font-size:15px}.sci-list li{margin:.3em 0}
+.sci-src{font-size:12.5px;color:var(--fg-soft);border-top:1px solid var(--rule);padding-top:12px;margin-top:16px}
+.sleepbar{width:100%;height:auto;margin:10px 0 4px;overflow:visible}
+.sb-track{fill:var(--rule)}.sb-range{fill:#9DB5DA}.sb-mark{stroke:var(--aw);stroke-width:2.5}
+.sb-lbl{font:500 15px Montserrat,sans-serif;fill:var(--fg-soft)}.sb-strong{fill:var(--aw);font-weight:600}
+@media (max-width:900px){.sci-grid{grid-template-columns:1fr}.words-on-site li{grid-template-columns:76px 1fr}}
+
+
+.class-voices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,44px);margin-top:22px;padding-top:24px;border-top:1px solid var(--rule)}
+.cv{margin:0;display:flex;gap:16px;align-items:flex-start;min-width:0}
+.cv-avatar{flex:none;width:56px;height:56px;border-radius:50%;border:1px dashed var(--fg-soft);background:repeating-linear-gradient(45deg,rgba(184,155,120,.18) 0 6px,transparent 6px 12px)}
+.cv blockquote{margin:0;font:italic 400 19px/1.45 var(--serif);color:var(--fg-soft)}
+.cv figcaption{font-size:12px;color:var(--fg-soft);margin-top:6px}
+.champ{margin:clamp(40px,6vw,80px) 0 0}.champ img{width:100%;aspect-ratio:1776/1050;object-fit:cover;border-radius:2px}
+.champ figcaption{font-size:13px;color:var(--fg-soft);margin-top:12px}.champ figcaption b{color:var(--fg);font-weight:500}
+.same-line{font:400 clamp(28px,3.4vw,48px)/1.2 var(--serif);margin:clamp(32px,4vw,56px) 0 0;max-width:20em}.same-line em{color:#9DB5DA}
+.objects.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:860px}
+@media (max-width:900px){.class-voices{grid-template-columns:1fr}.objects.two{grid-template-columns:1fr}}
+
+
+/* 30 Oct: day cycle, research, champions */
+.class-voices{margin-top:clamp(28px,4vw,48px)}
+.cycle-wrap{display:flex;justify-content:center;margin-top:clamp(48px,7vw,96px);padding:clamp(28px,5vw,60px) 0}
+.cycle{position:relative;width:min(640px,100%);aspect-ratio:1}
+.cycle-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.cycle-ring circle{fill:none;stroke:var(--rule);stroke-width:.35}
+.cycle-ring .ring-arc{stroke:var(--aw);stroke-width:.6;stroke-dasharray:238.76;stroke-dashoffset:238.76;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset .9s var(--ease)}
+.cycle-dot{position:absolute;inset:0;transform:rotate(0deg);transition:transform .9s var(--ease);pointer-events:none}
+.cycle-dot span{position:absolute;left:50%;top:12%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--aw);box-shadow:0 0 0 6px rgba(30,58,110,.15)}
+.node{position:absolute;width:30%;aspect-ratio:1;transform:translate(-50%,-50%);border:0;background:none;padding:0;cursor:pointer;color:var(--fg)}
+.node.n0{left:50%;top:12%}.node.n0 .nl{bottom:auto;top:-26px}.node.n1{left:88%;top:50%}.node.n2{left:50%;top:88%}.node.n3{left:12%;top:50%}
+.node .ph{display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;border:3px solid var(--bg);box-shadow:0 8px 24px rgba(7,24,44,.14);transition:transform .5s var(--ease),box-shadow .5s,filter .5s;filter:saturate(.75) brightness(.92)}
+.node .ph img{width:100%;height:100%;object-fit:cover}
+.node .nl{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);font:600 11px var(--label);letter-spacing:.24em;text-transform:uppercase;white-space:nowrap}
+.node.on .ph{transform:scale(1.12);box-shadow:0 0 0 3px var(--aw),0 14px 32px rgba(7,24,44,.22);filter:none}
+.swap-mini{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font:600 8.5px var(--label);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;background:rgba(231,209,58,.95);color:#1b1b1b;padding:3px 6px;border-radius:2px}
+.hide-swaps .swap-mini,.hide-swaps .swap-list{display:none}
+.cycle-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:38%;text-align:center}
+.cycle-center p{margin:0}
+.cc-time{font:500 11px var(--label);letter-spacing:.24em;color:var(--fg-soft)}
+.cc-word{font:400 clamp(30px,5vw,52px)/1.05 var(--serif);margin:.15em 0 .25em!important}
+.cc-line{font:italic 400 clamp(14px,1.6vw,19px)/1.35 var(--serif);color:var(--fg-soft)}
+.cc-prod{font:600 10px var(--label);letter-spacing:.16em;text-transform:uppercase;color:var(--aw);margin-top:.9em!important}
+.cycle-center.fade p{animation:ccfade .6s var(--ease)}
+@keyframes ccfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.swap-list{max-width:640px;margin:56px auto 0;font-size:12.5px;color:var(--fg-soft);background:rgba(231,209,58,.18);border-left:3px solid #E7D13A;padding:10px 14px}
+.practice.two-up{grid-template-columns:1fr 1fr}
+.sci-grid figure{margin:0}
+.sci-card figcaption p{font:400 clamp(20px,2vw,26px)/1.35 var(--serif);margin:14px 0 6px}
+.sci-card figcaption small{font-size:11.5px;color:var(--fg-soft);letter-spacing:.02em}
+.sci-icon{width:100%;height:auto;margin:10px 0 4px;overflow:visible}
+.si-temp{fill:none;stroke:var(--aw);stroke-width:3;stroke-linecap:round}
+.si-base{fill:none;stroke:var(--rule);stroke-width:2;stroke-dasharray:4 5}
+#science .h2{margin:1.2rem 0 clamp(32px,4vw,56px)}
+.champ-title{max-width:16em;margin-top:1.2rem}
+.champ{position:relative;margin:clamp(32px,5vw,64px) 0 0;max-width:820px}
+.champ img{width:100%;height:auto;aspect-ratio:653/479;object-fit:cover;border-radius:2px}
+.prod-dots{display:flex;gap:clamp(24px,4vw,56px);margin-top:clamp(32px,4vw,56px);flex-wrap:wrap}
+.pd{margin:0;display:flex;align-items:center;gap:16px}
+.pd-img{width:96px;height:96px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 35%,#F6F3EC,#E2DCCF);flex:none;display:flex;align-items:center;justify-content:center}
+.pd-img img{width:84%;height:84%;object-fit:contain;mix-blend-mode:multiply}
+.pd figcaption b{display:block;font:400 22px var(--serif)}.pd figcaption small{font-size:12px;color:var(--fg-soft)}
+@media (max-width:900px){.practice.two-up{grid-template-columns:1fr}}
+@media (max-width:560px){.node{width:27%}.node.n1{left:85%}.node.n3{left:15%}.node.n0{top:14%}.node.n2{top:86%}.node .nl{display:none}.swap-mini{display:none}.cycle-center{width:40%}.cc-line{font-size:12.5px}.cc-prod{font-size:8.5px}}
+@media (prefers-reduced-motion:reduce){.cycle-dot,.ring-arc{transition:none}}
+
+
+/* 30 Oct b: day strip, why grid, airfiber orb, beyond, video */
+.daystrip{margin:clamp(48px,7vw,96px) calc(var(--gutter)*-1) 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ds-move{will-change:transform}
+.ds-track{display:flex;gap:clamp(18px,2.4vw,32px);width:max-content;padding:0 var(--gutter);animation:dsloop 46s linear infinite}
+.daystrip:hover .ds-track{animation-play-state:paused}
+@keyframes dsloop{to{transform:translateX(-50%)}}
+.dc{width:clamp(250px,24vw,340px);flex:none}
+.dc-img{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--ivory)}
+.dc-img img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
+.dc:hover .dc-img img{transform:scale(1.04)}
+.dc-img .swap{top:auto;bottom:10px;left:10px;font-size:8.5px;padding:4px 7px}
+.dc-img .swap span{display:none}
+.dc-time{font:500 10.5px var(--label);letter-spacing:.24em;color:var(--fg-soft);margin:18px 0 4px}
+.dc-word{font:400 clamp(26px,2.4vw,34px)/1.1 var(--serif);margin:0}
+.dc-line{font:italic 400 17px/1.4 var(--serif);color:var(--fg-soft);margin:.4em 0 .5em}
+.dc-prod{font:600 9.5px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--aw);margin:0}
+.why-grid{display:grid;grid-template-columns:5fr 6fr;gap:clamp(32px,6vw,96px);align-items:center}
+.why-copy .h2{margin:1rem 0 .6em}
+.why-grid .prod-dots{margin-top:clamp(28px,3vw,44px)}
+.why-grid .champ{margin:0;max-width:none}
+.why-grid .champ img{aspect-ratio:3/2;object-fit:cover}
+.why-grid .champ figcaption{font:500 10.5px var(--label);letter-spacing:.18em;text-transform:uppercase;color:var(--fg-soft);margin-top:12px}
+.craft.af{grid-template-columns:auto 1fr;gap:clamp(28px,5vw,72px)}
+.af-orb{position:relative;width:clamp(170px,20vw,260px);aspect-ratio:1}
+.af-orb img{position:absolute;inset:15%;width:70%;height:70%;border-radius:50%;object-fit:cover;box-shadow:0 16px 36px -16px rgba(0,0,0,.6);transition:transform .6s var(--ease)}
+.af-orb:hover img{transform:scale(1.08)}
+.af-ring{position:absolute;inset:0;width:100%;height:100%;animation:afspin 26s linear infinite;overflow:visible}
+.af-ring circle{fill:none;stroke:var(--rule);stroke-width:.6}
+.af-ring text{font:500 8.6px Montserrat,sans-serif;letter-spacing:.2em;text-transform:uppercase;fill:#9DB5DA}
+@keyframes afspin{to{transform:rotate(360deg)}}
+.beyond{display:grid;grid-template-columns:7fr 4fr;gap:clamp(28px,5vw,72px);align-items:center;margin-top:clamp(28px,4vw,48px)}
+.port.three{margin:0;grid-template-columns:repeat(3,minmax(0,1fr))}
+.port.three figure{display:block}
+.beyond-line{font-size:clamp(30px,3.4vw,48px)}
+.video-ph{position:relative;margin:0;aspect-ratio:16/9;overflow:hidden;border-radius:2px;background:var(--ivory);display:flex;align-items:center;justify-content:center}
+.video-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.6) brightness(.8)}
+.video-ph .play{width:84px;height:84px;z-index:2}.video-ph .play::after{left:34px;top:26px;border-left-width:22px;border-top-width:16px;border-bottom-width:16px}
+.video-ph .swap{top:auto;bottom:18px;left:18px;max-width:440px}
+@media (max-width:900px){.why-grid,.beyond{grid-template-columns:1fr}.craft.af{grid-template-columns:1fr;justify-items:start}.port.three{grid-template-columns:repeat(3,minmax(0,1fr))}.port.three figure{display:block}}
+@media (max-width:560px){.dc{width:72vw}}
+@media (prefers-reduced-motion:reduce){.ds-track{animation:none}.daystrip{overflow-x:auto}.af-ring{animation:none}}
+
+
+/* 30 Oct c: evidence cards, schools row, contact */
+.evidence{background:#1C1C1C;color:#fff}
+.ev-head{text-align:center;margin-bottom:clamp(32px,4vw,48px)}
+.ev-eyebrow{font:500 12px var(--label);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.6);margin:0}
+.ev-title{font:400 clamp(24px,2.6vw,34px)/1.35 var(--label);letter-spacing:.16em;text-transform:uppercase;margin:12px 0 0}
+.ev-head.light .ev-eyebrow{color:var(--fg-soft)}.ev-head.light .ev-title{color:var(--fg);max-width:26em;margin-left:auto;margin-right:auto}
+.ev-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ev{background:#262626;padding:34px 30px 28px;display:flex;flex-direction:column;min-width:0}
+.ev p{margin:0}
+.ev .ico{width:36px;height:36px;color:#8FA8F0}
+.ev-k{font:500 12px var(--label);letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:18px!important}
+.ev-big{font:300 clamp(48px,5vw,64px)/1.05 var(--sans);margin-top:8px!important;color:#fff}
+.ev-sub{font-size:14px;color:rgba(255,255,255,.8);margin-top:6px!important;min-height:44px}
+.bars{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.evbar{display:flex;align-items:center;gap:10px}
+.evbar i{display:block;height:14px;width:0;border-radius:2px;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.ev.in .evbar i{width:calc(var(--w) * .78)}
+.evbar em{font-style:normal;font-size:13px;color:rgba(255,255,255,.85);white-space:nowrap}
+i.aw{background:#8FA8F0}i.cmp{background:#5e5e5e}
+.scale{position:relative;height:56px;margin-top:24px}
+.scale .track{position:absolute;left:0;right:0;top:34px;height:2px;background:linear-gradient(90deg,#8FA8F0,#5e5e5e)}
+.scale .dot{position:absolute;top:28px;left:50%;width:14px;height:14px;border-radius:50%;transform:translateX(-50%);transition:left 1.2s cubic-bezier(.2,.7,.2,1)}
+.ev.in .scale .dot{left:var(--x)}
+.scale .dot.aw{background:#8FA8F0}.scale .dot.cmp{background:#8a8a8a}
+.scale .dot b{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-weight:400;font-size:12px;white-space:nowrap;color:rgba(255,255,255,.85)}
+.ev-src{margin-top:auto!important;padding-top:22px;font:500 11px var(--label);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.ev-legend{display:flex;justify-content:center;gap:24px;margin-top:26px;font-size:12px;color:rgba(255,255,255,.7)}
+.ev-legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:7px;vertical-align:-1px}
+.pills{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:26px}
+.pill{display:inline-block;border:1px solid rgba(255,255,255,.6);border-radius:30px;padding:9px 28px;font:500 12px var(--label);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:#fff;transition:background .2s,color .2s}
+.pill:hover{background:#fff;color:#1C1C1C}
+.transp{font-size:11px;color:#9b9b9b;margin-top:18px;text-align:center}
+.school-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,18px)}
+.sch{position:relative;display:block;aspect-ratio:3/4;overflow:hidden;border-radius:2px;color:#fff;text-decoration:none;background:var(--ivory)}
+.sch img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.sch:hover img{transform:scale(1.05)}
+.sch::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,.65))}
+.sch span{position:absolute;left:18px;right:18px;bottom:18px;z-index:1}
+.sch b{display:block;font:400 clamp(17px,1.5vw,21px)/1.25 var(--serif)}
+.sch small{display:block;font:500 10px var(--label);letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-top:6px}
+.contact{background:#1C1C1C;color:#fff;padding:72px 0;text-align:center}
+.contact .ev-eyebrow{margin-bottom:16px}
+.c-name{font:400 26px var(--label);letter-spacing:.16em;text-transform:uppercase;margin:0}
+.c-role{font:500 13px var(--label);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin:8px 0 0}
+.c-addr{font-size:13px;color:rgba(255,255,255,.6);margin:14px 0 0}
+.c-mail{display:inline-block;margin-top:6px;color:#8FA8F0;text-decoration:none;font-size:15px;user-select:all}
+@media (max-width:900px){.ev-grid{grid-template-columns:1fr}.ev-sub{min-height:0}.school-row{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.evbar i,.scale .dot{transition:none}.ev .evbar i{width:calc(var(--w) * .78)}.ev .scale .dot{left:var(--x)}}
+
+/* image fallback (if an official image cannot load) */
+img.broken{opacity:0}
+.ph-fallback{position:relative}
+.ph-fallback::after{content:attr(data-missing);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;
+  font:500 10px var(--label);letter-spacing:.14em;text-transform:uppercase;color:#7c776e;background:repeating-linear-gradient(45deg,#ECE7DD 0 10px,#E5DFD3 10px 20px)}
+
+/* ───────── Responsive ───────── */
+@media (max-width:900px){
+  .intro,.custom,.feat-head,.lived,.port-copy{grid-template-columns:1fr}
+  .tl-line,.tl-fill{left:14px}
+  .tl-item,.tl-item:nth-child(even){grid-template-columns:1fr;padding-left:44px;position:relative}
+  .tl-item .tl-time,.tl-item:nth-child(even) .tl-time{grid-column:1;grid-row:1;text-align:left}
+  .tl-time span{font-size:26px;padding:0 0 6px;position:relative}
+  .tl-time span::before{content:"";position:absolute;left:-35px;top:12px;width:9px;height:9px;border-radius:50%;background:var(--fg)}
+  .tl-item .tl-text,.tl-item:nth-child(even) .tl-text{grid-column:1;grid-row:2;padding:0 0 18px;text-align:left}
+  .tl-item:nth-child(even) .tl-text .lede{margin-left:0}
+  .tl-item .tl-media,.tl-item:nth-child(even) .tl-media{grid-column:1;grid-row:3;padding:0}
+  .clock{background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:6px 14px 6px 8px;border-radius:99px;left:12px}
+  .clock.over{background:rgba(7,24,44,.35)}
+  .bar{background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding-top:12px;padding-bottom:12px}
+  .bar.over{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+  .maplbl{font-size:19px;letter-spacing:.1em}
+  .tri{grid-template-columns:1fr}
+  .tri article{min-height:62vh}
+  .objects{grid-template-columns:1fr;gap:40px}
+  .obj{display:grid;grid-template-columns:42% 1fr;gap:18px;align-items:center}
+  .obj figcaption{padding-top:0}
+  .feats{grid-template-columns:1fr 1fr}
+  .feat{border-right:0;margin-right:0;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+  .japan-grid{grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(70px,auto)}
+  .jp1{grid-column:1/7;grid-row:span 4}.jp2{grid-column:1/4;grid-row:span 2}.jp4{grid-column:4/7;grid-row:span 2}.jp3{grid-column:1/7;grid-row:span 3}.jp5{display:none}
+  .port{grid-template-columns:1fr;gap:36px}
+  .port figure{display:grid;grid-template-columns:44% 1fr;gap:18px;align-items:center}
+  .port figcaption{flex-direction:column;gap:6px;padding:0}
+  .parallel{grid-template-columns:1fr}
+  .pcenter{border:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:28px 0}
+  .moon{display:none}
+  .clock{bottom:14px}
+  .clock b{font-size:18px}
+  .scrollcue{display:none}
+}
+@media (max-width:560px){
+  .feats{grid-template-columns:1fr}
+  .zones-ctl{grid-template-columns:1fr}
+  .zbtn{display:flex;justify-content:space-between;align-items:center}
+  .zbtn small{margin:0}
+  .mapbox{margin-left:calc(var(--gutter)*-1);margin-right:calc(var(--gutter)*-1)}
+  .final::after{background:linear-gradient(180deg,rgba(7,24,44,.3),rgba(7,24,44,.75))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .js .rv{opacity:1;transform:none}
+  .arc{stroke-dashoffset:0}.pin{opacity:1}
+  .hero>img{transform:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar over" id="bar">
+  <a class="mark logos" href="#top" aria-label="JINIS × airweave, back to top"><img class="logo-j" src="assets/jinis_logo02.svg" alt="" width="448" height="108"><span class="wm-x" aria-hidden="true">×</span><img class="logo-a" src="assets/aw_logo.png" alt="" width="542" height="78"></a>
+  <span style="display:flex;gap:8px"><button class="notes-toggle" id="swapToggle" aria-pressed="true" type="button">Photo tags</button></span>
+</header>
+
+<div class="clock over" id="clock" aria-hidden="true"><span class="dial"></span><b id="clockTime">06:45</b><span id="clockWord">Dawn</span><span class="aw">· on airweave</span></div>
+
+<main id="main">
+
+<!-- 00 HERO -->
+<section class="hero" id="top" data-tone="dawn" data-time="06:30" data-word="Dawn" data-rot="195" data-over="1" aria-label="Introduction">
+  <img src="assets/jinis_boarding_facility_img02.webp" alt="The Japanese garden and pond on the JINIS campus in Jinsekikogen, Hiroshima, seen from above" width="1120" height="630" fetchpriority="high">
+  <p class="swap"><b>Photo to replace</b><span>Request the high-resolution original of the Japanese garden / campus from JINIS (≥2400 px, no pupils).</span></p>
+  <div class="wrap">
+    <div class="lockup hero-lockup"><img class="logo-j" src="assets/jinis_logo02.svg" alt="JINIS — Jinseki International School" width="448" height="108"><span class="div"></span><img class="logo-a" src="assets/aw_logo.png" alt="airweave" width="542" height="78"></div>
+    <p class="collab">Jinseki International School × airweave</p>
+    <h1 class="display">Rooted in Japan. Ready for the World.</h1>
+    <p>At Japan’s first full-boarding primary school, airweave is part of every school day: where children study, where they eat together, and where they sleep.</p>
+    
+  </div>
+  <span class="scrollcue">Scroll</span>
+</section>
+
+<!-- 01 A DAY ON AIRWEAVE -->
+<section class="sec" id="day" data-tone="day" data-time="07:00" data-word="Morning" data-rot="210" aria-labelledby="h-day">
+  <div class="wrap">
+    <div class="intro">
+      <div class="stack">
+        <p class="num rv">01 · Study · Dining · Sleep</p>
+        <h2 class="h2 rv d1" id="h-day">A whole school day, on airweave.</h2>
+      </div>
+      <div class="stack">
+        <p class="lede rv d2">At a full-boarding school, the day does not end when class does. From the first stretch in the morning to lights out, airweave is there: in the classroom, at the table and in bed.</p>
+      </div>
+    </div>
+
+    <div class="class-voices" aria-label="Teachers and students">
+      <figure class="cv rv" data-slot="teacher-voice"><span class="cv-avatar" aria-hidden="true"></span><div><blockquote>Teacher’s words to be added here.</blockquote><figcaption>Name · Teacher</figcaption></div></figure>
+      <figure class="cv rv d1" data-slot="student-voice-1"><span class="cv-avatar" aria-hidden="true"></span><div><blockquote>Student’s words to be added here.</blockquote><figcaption>Name · Grade</figcaption></div></figure>
+      <figure class="cv rv d2" data-slot="student-voice-2"><span class="cv-avatar" aria-hidden="true"></span><div><blockquote>Student’s words to be added here.</blockquote><figcaption>Name · Grade</figcaption></div></figure>
+    </div>
+
+    <div class="daystrip rv" id="daystrip" aria-label="A day at JINIS, on airweave">
+      <div class="ds-move" id="dsMove"><div class="ds-track"><article class="dc"><div class="dc-img"><img loading="lazy" src="assets/visit_dorm_bed.webp" alt="Wake at JINIS" width="1800" height="1350"><p class="swap"><b>Reshoot · with airweave</b><span>Made bed, mattress edge and label visible, morning light</span></p></div><p class="dc-time">07:00</p><h3 class="dc-word">Wake</h3><p class="dc-line">Rest well. Start the day ready.</p><p class="dc-prod">airweave mattress</p></article><article class="dc"><div class="dc-img"><img loading="lazy" src="assets/jinis_school_img02.webp" alt="Study at JINIS" width="1120" height="630"><p class="swap"><b>Reshoot · with airweave</b><span>Classroom chair with the seat cushion, pupils from behind</span></p></div><p class="dc-time">08:20</p><h3 class="dc-word">Study</h3><p class="dc-line">Comfort that supports focus.</p><p class="dc-prod">airweave seat cushion</p></article><article class="dc"><div class="dc-img"><img loading="lazy" src="assets/jinis_boarding_kitchen_img05.webp" alt="Dine at JINIS" width="1120" height="630"><p class="swap"><b>Reshoot · with airweave</b><span>Dining chair with the cushion at a JINIS meal</span></p></div><p class="dc-time">12:00</p><h3 class="dc-word">Dine</h3><p class="dc-line">Support for shared moments.</p><p class="dc-prod">airweave seat cushion</p></article><article class="dc"><div class="dc-img"><img loading="lazy" src="assets/visit_dorm_bed_front.webp" alt="Sleep at JINIS" width="1800" height="1350"><p class="swap"><b>Reshoot · with airweave</b><span>Bed with duvet at night, soft lamp light</span></p></div><p class="dc-time">20:45</p><h3 class="dc-word">Sleep</h3><p class="dc-line">Recover overnight, ready for the day ahead.</p><p class="dc-prod">airweave mattress & duvet</p></article><article class="dc" aria-hidden="true"><div class="dc-img"><img loading="lazy" src="assets/visit_dorm_bed.webp" alt="" width="1800" height="1350"><p class="swap"><b>Reshoot · with airweave</b><span>Made bed, mattress edge and label visible, morning light</span></p></div><p class="dc-time">07:00</p><h3 class="dc-word">Wake</h3><p class="dc-line">Rest well. Start the day ready.</p><p class="dc-prod">airweave mattress</p></article><article class="dc" aria-hidden="true"><div class="dc-img"><img loading="lazy" src="assets/jinis_school_img02.webp" alt="" width="1120" height="630"><p class="swap"><b>Reshoot · with airweave</b><span>Classroom chair with the seat cushion, pupils from behind</span></p></div><p class="dc-time">08:20</p><h3 class="dc-word">Study</h3><p class="dc-line">Comfort that supports focus.</p><p class="dc-prod">airweave seat cushion</p></article><article class="dc" aria-hidden="true"><div class="dc-img"><img loading="lazy" src="assets/jinis_boarding_kitchen_img05.webp" alt="" width="1120" height="630"><p class="swap"><b>Reshoot · with airweave</b><span>Dining chair with the cushion at a JINIS meal</span></p></div><p class="dc-time">12:00</p><h3 class="dc-word">Dine</h3><p class="dc-line">Support for shared moments.</p><p class="dc-prod">airweave seat cushion</p></article><article class="dc" aria-hidden="true"><div class="dc-img"><img loading="lazy" src="assets/visit_dorm_bed_front.webp" alt="" width="1800" height="1350"><p class="swap"><b>Reshoot · with airweave</b><span>Bed with duvet at night, soft lamp light</span></p></div><p class="dc-time">20:45</p><h3 class="dc-word">Sleep</h3><p class="dc-line">Recover overnight, ready for the day ahead.</p><p class="dc-prod">airweave mattress & duvet</p></article></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT CHANGES ON AIRWEAVE -->
+<section class="sec evidence" id="science" data-tone="night" data-time="—" data-word="Research" data-rot="625" aria-labelledby="h-sci">
+  <div class="wrap">
+    <div class="ev-head">
+      <p class="ev-eyebrow rv">Peer-reviewed evidence</p>
+      <h2 class="ev-title rv d1" id="h-sci">What changes on airweave</h2>
+    </div>
+    <div class="ev-grid">
+      <article class="ev rv" data-anim>
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M30 6a18 18 0 1 0 12 30A15 15 0 0 1 30 6z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <p class="ev-k">Deep sleep</p>
+        <p class="ev-big"><span class="count" data-to="5">5</span>×</p>
+        <p class="ev-sub">more deep sleep in the first two hours</p>
+        <div class="bars"><div class="evbar"><i class="aw" style="--w:94%"></i><em>9.4 min</em></div><div class="evbar"><i class="cmp" style="--w:19%"></i><em>1.9 min</em></div></div>
+        <p class="ev-src">PLOS ONE 2018 · young adults</p>
+      </article>
+      <article class="ev rv d1" data-anim>
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><path d="M20 8a4 4 0 0 1 8 0v20a9 9 0 1 1-8 0z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="35" r="4" fill="currentColor"/><path d="M24 31V16" stroke="currentColor" stroke-width="2"/></svg>
+        <p class="ev-k">Body temperature</p>
+        <p class="ev-big">−0.<span class="count" data-to="3">3</span>°C</p>
+        <p class="ev-sub">lower core temperature — the body’s signal for deep sleep</p>
+        <div class="scale"><div class="track"></div><span class="dot aw" style="--x:13%"><b>36.05°C</b></span><span class="dot cmp" style="--x:88%"><b>36.35°C</b></span></div>
+        <p class="ev-src">PLOS ONE 2018 · young adults</p>
+      </article>
+      <article class="ev rv d2" data-anim>
+        <svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="27" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 27V18M20 6h8M24 6v6" stroke="currentColor" stroke-width="2"/></svg>
+        <p class="ev-k">Next-day performance</p>
+        <p class="ev-big"><span class="count" data-to="5.5" data-dec="1">5.5</span>%</p>
+        <p class="ev-sub">faster agility for student-athletes</p>
+        <div class="bars"><div class="evbar"><i class="aw" style="--w:94.5%"></i><em>31.0 s</em></div><div class="evbar"><i class="cmp" style="--w:100%"></i><em>32.8 s</em></div></div>
+        <p class="ev-src">Scientific Reports 2020 · IMG Academy</p>
+      </article>
+    </div>
+    <div class="ev-legend"><span><i class="aw"></i>airweave</span><span><i class="cmp"></i>Comparison surface</span></div>
+    <div class="pills"><a class="pill" href="https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0197521" target="_blank" rel="noopener">PLOS ONE 2018</a><a class="pill" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC7366624" target="_blank" rel="noopener">Scientific Reports 2020</a></div>
+    <p class="transp">Studies led by Stanford sleep researchers and funded by airweave; small samples.</p>
+  </div>
+</section>
+
+<!-- 04 JAPANESE CRAFTSMANSHIP & SLEEP -->
+<section class="sec night" id="night" data-tone="night" data-time="21:00" data-word="Night" data-rot="630" aria-labelledby="h-night">
+  <span class="moon" aria-hidden="true"></span>
+  <div class="wrap">
+    <div class="why-grid">
+      <div class="why-copy">
+        <p class="num rv">02 · Why we chose airweave</p>
+        <h2 class="h2 rv d1" id="h-night">The same standard as Olympic athletes.</h2>
+        <p class="lede rv d2">Chosen for the Athletes’ Village, where the world’s finest compete, airweave supports the restorative sleep that performance depends on.</p>
+        <div class="prod-dots rv d3">
+          <figure class="pd"><span class="pd-img"><img loading="lazy" src="assets/aw_mico_mattress.webp" alt="airweave mattress, Milano Cortina 2026 collection" width="1000" height="1000"></span><figcaption><b>Mattress</b><small>Milano Cortina 2026 collection</small></figcaption></figure>
+          <figure class="pd"><span class="pd-img"><img loading="lazy" src="assets/aw_mico_hyperdown.webp" alt="airweave Hyperdown duvet, Milano Cortina 2026 collection" width="1000" height="1000"></span><figcaption><b>Duvet</b><small>Milano Cortina 2026 collection</small></figcaption></figure>
+        </div>
+      </div>
+      <figure class="champ rv d1">
+        <img loading="lazy" src="assets/aw_rikuryu_skating.webp" alt="Figure skating pair Riku Miura and Ryuichi Kihara on the ice" width="1500" height="1000">
+        <figcaption>Riku-Ryu — Riku Miura &amp; Ryuichi Kihara</figcaption>
+      </figure>
+    </div>
+
+    <div class="craft af">
+      <div class="af-orb rv"><svg class="af-ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="afc" d="M60,60 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0"/></defs><circle cx="60" cy="60" r="58"/><text><textPath href="#afc">airfiber® · breathable · washable · recyclable ·</textPath></text></svg><img src="assets/aw_airfiber_orb.webp" alt="A cube of white airfiber" loading="lazy"></div>
+      <div class="stack">
+        <p class="label rv">airfiber®</p>
+        <h3 class="h2 rv d1" style="font-size:clamp(30px,3.4vw,50px)">Made in Japan, mostly made of air.</h3>
+        <p class="lede rv d2">The breathable core inside every airweave mattress: an open, resilient fibre structure that is mostly air, washable and recyclable.</p>
+      </div>
+    </div>
+    <div class="feats">
+      <div class="feat rv"><p class="label">01 · Quick rebound</p><h3 class="h3">Easy to turn over.</h3><p>A highly resilient structure spreads body pressure and makes it easy to change position during sleep.</p><span class="why">For growing bodies</span></div>
+      <div class="feat rv d1"><p class="label">02 · Breathability</p><h3 class="h3">More than 90% air.</h3><p>An open, three-dimensional fibre structure lets heat and moisture move freely.</p><span class="why">For fresh nights, every season</span></div>
+      <div class="feat rv d2"><p class="label">03 · Clean &amp; washable</p><h3 class="h3">Clean, all the way through.</h3><p>The cover goes in the washing machine; the airfiber® core can be rinsed with water.</p><span class="why">For shared residential life</span></div>
+      <div class="feat rv d3"><p class="label">04 · Sustainability</p><h3 class="h3">A recyclable core.</h3><p>The airfiber® mattress core is fully recyclable, designed to reduce waste.</p><span class="why">For the world they will inherit</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 GROWING UP -->
+<section class="sec" id="custom" data-tone="deep" data-time="00:00" data-word="Midnight" data-rot="720" aria-labelledby="h-custom">
+  <div class="wrap custom">
+    <div class="stack">
+      <p class="num rv">Growing up</p>
+      <h2 class="h2 rv d1" id="h-custom">Growing up, one night at a time.</h2>
+      <p class="lede rv d2">Children arrive at JINIS at six and leave at twelve. In between, they grow taller, stronger and more independent, often faster than anyone expects.</p>
+      <p class="lede rv d3">airweave grows with them. Its mattresses are made in sections, and each zone (shoulders, hips, legs) can be adjusted softer or firmer. As a child’s body changes, the bed can be re-fitted to the child who sleeps in it.</p>
+    </div>
+    <div class="diagram rv d2">
+      <p class="label" style="margin:0 0 14px">Marks on the pillar · age 6 to 12</p>
+      <svg viewBox="0 0 600 340" role="img" aria-labelledby="dg-t" id="dg">
+        <title id="dg-t">A child standing beside a wooden pillar marked with their height at each age from 6 to 12. The child grows taller as the age increases.</title>
+        <line x1="40" x2="560" y1="320" y2="320" class="floor"/>
+        <rect x="236" y="14" width="46" height="306" rx="2" class="pillar"/>
+        <rect x="236" y="14" width="6" height="306" class="pillar-edge"/>
+        <g id="marks"></g>
+        <g id="kid" class="kid">
+          <circle cx="360" cy="66" r="26"/>
+          <path d="M338 98 Q360 90 382 98 Q392 102 393 116 L402 196 Q403 204 394 205 Q387 205 386 197 L380 132 L382 206 L377 320 L364 320 L361 222 L359 222 L356 320 L343 320 L338 206 L340 132 L334 197 Q333 205 326 205 Q317 204 318 196 L327 116 Q328 102 338 98 Z"/>
+        </g>
+      </svg>
+      <div class="grade-ctl">
+        <label for="grade" class="label">Age</label>
+        <input type="range" id="grade" min="6" max="12" step="1" value="6" aria-describedby="gradeOut">
+        <output id="gradeOut" for="grade">6 years old</output>
+      </div>
+      <p class="diag-status" id="dgStatus" aria-live="polite">As they grow taller, their airweave mattress can be re-adjusted to fit.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec home-sec" id="home" data-tone="dawn2" data-time="07:00" data-word="A new morning" data-rot="1170" aria-labelledby="h-home">
+  <div class="wrap">
+    <p class="num rv">03 · Beyond JINIS</p>
+    <div class="beyond">
+      <div class="port three">
+        <figure class="rv"><div class="ph"><img loading="lazy" src="assets/aw_portable_rolled.webp" alt="airweave Portable being rolled up into its carry case" width="640" height="640"></div></figure>
+        <figure class="rv d1"><div class="ph"><img loading="lazy" src="assets/aw_portable_carried.webp" alt="airweave Portable packed in its carry case" width="640" height="640"></div></figure>
+        <figure class="rv d2"><div class="ph"><img loading="lazy" src="assets/aw_portable_cat.webp" alt="airweave Portable laid flat, with its carry case" width="680" height="680"></div></figure>
+      </div>
+      <h2 class="h2 rv d2 beyond-line" id="h-home">Familiar sleep, carried anywhere in the world.</h2>
+    </div>
+  </div>
+</section>
+
+<!-- 06 STORIES -->
+<section class="sec" id="stories" data-tone="day" data-time="10:00" data-word="Day" data-rot="1260" aria-labelledby="h-stories">
+  <div class="wrap">
+    <p class="num rv">04 · Stories</p>
+    <h2 class="h2 rv d1" id="h-stories" style="margin:1.2rem 0 clamp(28px,4vw,48px)">Stories from JINIS.</h2>
+    <figure class="video-ph rv">
+      <img loading="lazy" src="assets/visit_dorm_room.webp" alt="" width="1800" height="1350">
+      <span class="play" aria-hidden="true"></span>
+      <p class="swap"><b>Video planned</b><span>JINIS to film “A day on airweave”: one pupil’s day, from waking to lights out, with airweave in each scene (consent required).</span></p>
+    </figure>
+  </div>
+</section>
+
+<!-- 07 SCHOOLS -->
+<section class="sec schools" id="schools" data-tone="dawn2" data-time="—" data-word="Schools" data-rot="1290" aria-labelledby="h-schools">
+  <div class="wrap">
+    <div class="ev-head light">
+      <p class="ev-eyebrow rv">airweave for schools</p>
+      <h2 class="ev-title rv d1" id="h-schools">Where excellence is non-negotiable, recovery is designed.</h2>
+    </div>
+    <div class="school-row">
+      <a class="sch rv" href="https://www.operadeparis.fr/en/artists/ballet-school" target="_blank" rel="noopener"><img loading="lazy" src="assets/school_paris.webp" alt="" width="1400" height="934"><span><b>Paris Opera Ballet School</b><small>Paris · France</small></span></a>
+      <a class="sch rv d1" href="https://www.royalballetschool.org.uk/" target="_blank" rel="noopener"><img loading="lazy" src="assets/school_rbs.webp" alt="" width="1400" height="788"><span><b>The Royal Ballet School</b><small>London · United Kingdom</small></span></a>
+      <a class="sch rv d2" href="https://www.imgacademy.com/" target="_blank" rel="noopener"><img loading="lazy" src="assets/school_img.webp" alt="" width="1400" height="617"><span><b>IMG Academy</b><small>Florida · USA</small></span></a>
+      <a class="sch rv d3" href="https://uwcisak.jp/" target="_blank" rel="noopener"><img loading="lazy" src="assets/school_isak.webp" alt="" width="1400" height="788"><span><b>UWC ISAK Japan</b><small>Karuizawa · Japan</small></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONTACT -->
+<section class="contact" id="contact" data-tone="night" data-time="—" data-word="Contact" data-rot="1300" aria-labelledby="h-contact">
+  <div class="wrap">
+    <p class="ev-eyebrow">Contact</p>
+    <h2 class="c-name" id="h-contact">Yuta Mizuno</h2>
+    <p class="c-role">Head of Business Development, Public Relations &amp; President’s Office</p>
+    <p class="c-addr">airweave Inc. · Shin-Otemachi Building 8F, 2-2-1 Otemachi, Chiyoda-ku, Tokyo 100-0004</p>
+    <a class="c-mail" href="mailto:yuta_mizuno@airweave.jp">yuta_mizuno@airweave.jp</a>
+    <div class="pills"><a class="pill" href="mailto:yuta_mizuno@airweave.jp?subject=JINIS%20%C3%97%20airweave">Contact us</a></div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>JINIS — Jinseki International School × airweave</span>
+  <span>Concept draft · yellow tags mark photos still to be shot</span>
+</footer>
+
+<script type="application/json" id="voices-data">
+[
+  {"perspective":"School Perspective","topic":"Why JINIS chose airweave, and what the boarding environment means to the school.","with":"JINIS leadership or house parents","quote":"","name":"","role":"","photo":"","video":""},
+  {"perspective":"Parent Perspective","topic":"How a family experiences boarding life, and rest, at JINIS.","with":"A JINIS parent, with consent","quote":"","name":"","role":"","photo":"","video":""},
+  {"perspective":"Sleep Science Perspective","topic":"Why sleep matters for children aged six to twelve.","with":"A sleep researcher, to be confirmed","quote":"","name":"","role":"","photo":"","video":""}
+]
+</script>
+<script type="application/json" id="stories-data">
+[
+  {"category":"Campus Stories","type":"link","title":"VIDEO of JINIS","text":"Official films published by the school.","url":"https://jinis.jp/en/video","thumb":"assets/jinis_boarding_facility_img02.webp","source":"jinis.jp"}
+]
+</script>
+<script>
+(function(){
+  var d=document,root=d.documentElement;root.classList.add('js');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* image fallback: keep layout, label what's missing */
+  d.querySelectorAll('img').forEach(function(im){
+    im.addEventListener('error',function(){im.classList.add('broken');var p=im.parentElement;p.classList.add('ph-fallback');p.setAttribute('data-missing','Official image — '+(im.alt||'')+'');},{once:true});
+  });
+
+  /* reveal */
+  var rio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rio.unobserve(e.target)}})},{rootMargin:'0px 0px -12% 0px'});
+  d.querySelectorAll('.rv,#map').forEach(function(el){rio.observe(el)});
+
+  /* 24-hour light system + clock */
+  var bar=d.getElementById('bar'),clock=d.getElementById('clock'),ct=d.getElementById('clockTime'),cw=d.getElementById('clockWord'),dial=clock.querySelector('.dial');
+  function setClock(el){
+    if(el.dataset.time){ct.textContent=el.dataset.time;cw.textContent=el.dataset.word||'';dial.style.setProperty('--rot',(el.dataset.rot||0)+'deg');clock.classList.toggle('on-aw',!!el.dataset.aw)}
+  }
+  var tio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var s=e.target;
+    if(s.dataset.tone)root.dataset.tone=s.dataset.tone;
+    var over=!!s.dataset.over;bar.classList.toggle('over',over);clock.classList.toggle('over',over);setClock(s);
+  })},{rootMargin:'-50% 0px -50% 0px'});
+  d.querySelectorAll('main>section').forEach(function(s){tio.observe(s)});
+  var iio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setClock(e.target)})},{rootMargin:'-50% 0px -50% 0px'});
+  d.querySelectorAll('.tl-item').forEach(function(s){iio.observe(s)});
+  /* night on the timeline's last item */
+  var night=d.querySelector('.tl-night');
+
+  /* timeline fill */
+  var tl=d.getElementById('tl'),fill=d.getElementById('tlFill'),tick=false;
+  function onScroll(){tick=false;if(!tl)return;var r=tl.getBoundingClientRect(),vh=innerHeight;var p=Math.min(1,Math.max(0,(vh*.5-r.top)/r.height));fill.style.height=(p*100)+'%';}
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(onScroll)}},{passive:true});onScroll();
+
+  /* review notes */
+  var sw=d.getElementById('swapToggle');sw.addEventListener('click',function(){var off=d.body.classList.toggle('hide-swaps');sw.setAttribute('aria-pressed',!off)});
+
+  /* growing-up diagram: child beside a height pillar, age 6 to 12 (illustrative proportions) */
+  var kid=d.getElementById('kid'),marks=d.getElementById('marks'),gr=d.getElementById('grade'),go=d.getElementById('gradeOut');
+  var NS='http://www.w3.org/2000/svg',FLOOR=320,FULL=280;
+  function k(age){return .6+.4*(age-6)/6}
+  for(var a=6;a<=12;a++){var y=(FLOOR-FULL*k(a)).toFixed(1);var m=d.createElementNS(NS,'g');m.dataset.a=a;
+    m.innerHTML='<line x1="242" x2="282" y1="'+y+'" y2="'+y+'"/><text x="226" y="'+(+y+4)+'" text-anchor="end">'+a+'</text>';marks.appendChild(m)}
+  function grow(age){
+    kid.style.transform='translate(360px,'+FLOOR+'px) scale('+k(age)+') translate(-360px,-'+FLOOR+'px)';
+    marks.querySelectorAll('g').forEach(function(m){var v=+m.dataset.a;m.style.opacity=v<=age?1:0;m.classList.toggle('now',v===age)});
+    go.textContent=age+' years old';
+  }
+  gr.addEventListener('input',function(){grow(+gr.value)});
+  grow(6);
+  if(!reduce){var played=false;new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting&&!played){played=true;o.disconnect();var g=6;var iv=setInterval(function(){g++;gr.value=g;grow(g);if(g>=12)clearInterval(iv)},700)}})},{threshold:.6}).observe(d.getElementById('dg'))}
+
+  /* ── Voices & Perspectives (renders real entries only; otherwise a placeholder) ── */
+  function esc(t){return String(t||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function readJSON(id){try{return JSON.parse(d.getElementById(id).textContent)}catch(e){return []}}
+  var vg=d.getElementById('voicesGrid');
+  if(vg){vg.innerHTML=readJSON('voices-data').map(function(v){
+    if(v.quote){return '<figure class="voice"><p class="label">'+esc(v.perspective)+'</p>'+(v.video?'<video controls preload="none" playsinline'+(v.photo?' poster="'+esc(v.photo)+'"':'')+' src="'+esc(v.video)+'"></video>':(v.photo?'<img loading="lazy" src="'+esc(v.photo)+'" alt="">':''))+'<blockquote>“'+esc(v.quote)+'”</blockquote><figcaption class="who">'+esc(v.name)+(v.role?', '+esc(v.role):'')+'</figcaption></figure>'}
+    return '<article class="voice pending"><p class="label">'+esc(v.perspective)+'</p><h3>'+esc(v.topic)+'</h3><p>With: '+esc(v.with)+'</p><p class="status">Interview to be recorded</p></article>'}).join('')}
+
+  /* ── Stories & video (SNS-ready) ── */
+  var CATS=['Campus Stories','Student Life','Japanese Culture','Sleep & Wellbeing','Short-form Video'];
+  var items=readJSON('stories-data'),sg=d.getElementById('storyGrid'),sc=d.getElementById('storyChips'),cur='All';
+  function embedUrl(u){var m=u.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([\w-]{6,})/);if(m)return 'https://www.youtube-nocookie.com/embed/'+m[1];
+    if(/instagram\.com\/(p|reel)\//.test(u))return u.replace(/\/?(\?.*)?$/,'/')+'embed';return null}
+  function card(it){
+    var vert=it.category==='Short-form Video'||it.vertical, media='', inner='';
+    if(it.type==='video')media='<video controls preload="none" playsinline'+(it.thumb?' poster="'+esc(it.thumb)+'"':'')+' src="'+esc(it.src)+'"></video>';
+    else if(it.type==='embed'&&embedUrl(it.url||''))media='<iframe loading="lazy" src="'+esc(embedUrl(it.url))+'" title="'+esc(it.title)+'" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    else media=(it.thumb?'<img loading="lazy" src="'+esc(it.thumb)+'" alt="">':'')+(it.type==='link'&&/video/i.test(it.title+it.text)?'<span class="play" aria-hidden="true"></span>':'');
+    inner='<div class="thumb">'+media+'</div><p class="cat">'+esc(it.category)+(it.source?' · '+esc(it.source):'')+'</p><h3>'+esc(it.title)+'</h3>'+(it.text?'<p>'+esc(it.text)+'</p>':'');
+    if((it.type==='link'||it.type==='image'||it.type==='embed')&&it.url&&it.type!=='embed')inner='<a href="'+esc(it.url)+'" target="_blank" rel="noopener">'+inner+'</a>';
+    return '<figure class="story'+(vert?' vertical':'')+'">'+inner+'</figure>'}
+  function pending(c){return '<figure class="story pending'+(c==='Short-form Video'?' vertical':'')+'"><div class="thumb"><span>Reserved for approved content</span></div><p class="cat">'+esc(c)+'</p><h3>Coming soon</h3></figure>'}
+  function renderStories(){
+    var list=items.filter(function(i){return cur==='All'||i.category===cur}).map(card);
+    CATS.forEach(function(c){if((cur==='All'||cur===c)&&!items.some(function(i){return i.category===c}))list.push(pending(c))});
+    sg.innerHTML=list.join('')}
+  if(sg&&sc){sc.innerHTML=['All'].concat(CATS).map(function(c){return '<button class="chip" role="tab" type="button" aria-selected="'+(c===cur)+'" data-c="'+esc(c)+'">'+esc(c)+'</button>'}).join('');
+    sc.addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b)return;cur=b.dataset.c;sc.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-selected',x===b)});renderStories()});
+    renderStories()}
+
+  /* day strip: pulled left by scroll, while looping on its own */
+  var ds=d.getElementById('daystrip'),dsm=d.getElementById('dsMove');
+  if(ds&&dsm&&!reduce){var dt=false;function dsScroll(){dt=false;var r=ds.getBoundingClientRect(),vh=innerHeight;var p=Math.min(1,Math.max(0,(vh-r.top)/(vh+r.height)));dsm.style.transform='translateX('+(-p*22)+'vw)'}
+    addEventListener('scroll',function(){if(!dt){dt=true;requestAnimationFrame(dsScroll)}},{passive:true});dsScroll()}
+
+  /* evidence counters */
+  var evs=d.querySelectorAll('[data-anim]');
+  function runEv(el){el.classList.add('in');if(reduce)return;el.querySelectorAll('.count').forEach(function(c){var to=parseFloat(c.dataset.to),dec=+(c.dataset.dec||0),t0=null;function st(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1200,1);c.textContent=(to*(1-Math.pow(1-p,3))).toFixed(dec);if(p<1)requestAnimationFrame(st)}requestAnimationFrame(st)})}
+  var evio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){runEv(e.target);evio.unobserve(e.target)}})},{threshold:.35});
+  evs.forEach(function(c){evio.observe(c)});
+})();
+</script>
+</body>
+</html>
