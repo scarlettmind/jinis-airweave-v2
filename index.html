@@ -321,6 +321,11 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
 .shot:not(.ok){display:block!important;top:12px;left:12px;max-width:min(360px,calc(100% - 24px));padding:9px 12px;background:#fff3ba;color:#493800;border-left:3px solid #c69119;border-radius:0;box-shadow:0 2px 10px #0002;font-family:var(--serif);font-size:12px;line-height:1.6;letter-spacing:.03em}
 .shot:not(.ok) small{margin-top:3px;font-size:11px;line-height:1.65;font-weight:400}
 @media(max-width:600px){.shot:not(.ok){top:8px;left:8px;max-width:calc(100% - 16px);padding:7px 9px;font-size:11px}.shot:not(.ok) small{font-size:10px}}
+
+.hero .shot.hero-note{top:auto!important;bottom:72px!important;left:auto;right:16px;z-index:5}
+.photo-note{background:#fff3ba;color:#493800;border-left:3px solid #c69119;text-align:left;font-size:12px;line-height:1.8;padding:12px 14px;margin:0 0 22px;letter-spacing:.03em}
+.photo-note b,.photo-note small{display:block}.photo-note b{margin-bottom:4px}.photo-note small{font-size:11px;margin-top:4px}
+@media(max-width:600px){.hero .shot.hero-note{right:12px;bottom:70px!important;max-width:calc(100% - 24px)}.photo-note{font-size:12px}}
 </style>
 
 <div class="draft">提案用モック ｜ <b>黄色タグ</b> = 撮影予定・差し替え（P番号は撮影リストと対応）｜ <b style="color:#6fdc9a">緑タグ</b> = JINIS提供写真</div>
@@ -335,7 +340,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
 <main id="main">
 <section class="hero ph">
   <img src="assets/jd_hero.webp" alt="寮のベッドで本を読む子ども">
-  <span class="shot ok" style="top:auto;bottom:62px;left:auto;right:12px">JINIS提供 · JINIS250523_04198<small>※寝具がエアウィーヴか要確認（枕は対象外）</small></span>
+  <span class="shot hero-note">トップ写真 · 再撮影<small>エアウィーヴのマットレスを使用した寮のベッドで撮影。製品が分かる構図に。（現在：寝具の製品確認前の仮写真）</small></span>
   <div class="in">
     <div class="kick">Life at JINIS</div>
     <h1 class="lockup"><span class="sr">JINIS × airweave</span><img src="assets/jinis_logo02.svg" alt="JINIS Jinseki International School"><i>×</i><img class="awl" src="assets/aw_logo.png" alt="airweave"></h1>
@@ -343,7 +348,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
   </div>
   <details class="life-menu"><summary>Life at JINIS</summary><div class="links"><a href="https://jinis.jp/life/environment/">周辺環境</a><a href="https://jinis.jp/life/boarding/">ボーディング</a><a href="https://jinis.jp/life/weekend/">WEEKEND</a><a href="#main" aria-current="page">エアウィーヴ特集</a></div></details>
 </section>
-<nav class="wrap crumb" aria-label="パンくずリスト"><a href="https://jinis.jp/">ホーム</a><span>›</span><a href="https://jinis.jp/life/">Life at JINIS</a><span>›</span><a href="https://jinis.jp/life/boarding/">ボーディング</a><span>›</span>エアウィーヴ特集</nav>
+<nav class="wrap crumb" aria-label="パンくずリスト"><a href="https://jinis.jp/">ホーム</a><span>›</span><a href="https://jinis.jp/life/">Life at JINIS</a><span>›</span>エアウィーヴ特集</nav>
 
 <!-- INTRO -->
 <section class="sec">
@@ -406,12 +411,12 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
 </section>
 
 <!-- 09 VOICES -->
-<section class="sec">
+<section class="sec" id="voices">
   <div class="wrap">
     <div class="center rv"><div class="en">Voices</div><h2 class="h2">みんなの声</h2></div>
     <div class="duo">
-      <blockquote class="rv"><div class="av"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#dcebfa"/><path d="M12 64c2-12 10-17 20-17s18 5 20 17z" fill="#4aa3ee"/><circle cx="32" cy="30" r="13" fill="#f6d2b4"/><path d="M19 28c0-9 6-14 13-14s13 5 13 14c-3-4-8-6-13-6s-10 2-13 6z" fill="#3a2a22"/><circle cx="27" cy="31" r="1.6" fill="#3a2a22"/><circle cx="37" cy="31" r="1.6" fill="#3a2a22"/><path d="M28 36q4 3 8 0" stroke="#c0705a" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div><q class="placeholder">[児童のコメント：実際の声を一言]</q><cite class="placeholder">[〇年生]</cite></blockquote>
-      <blockquote class="rv d1"><div class="av"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#e3e8ee"/><circle cx="32" cy="26" r="11" fill="#c6ced8"/><path d="M12 60c3-12 11-18 20-18s17 6 20 18z" fill="#c6ced8"/></svg><span class="tg">P16e</span></div><q class="placeholder">[先生・ハウスペアレントのコメント：実際の声を一言]</q><cite class="placeholder">[役職・氏名]</cite></blockquote>
+      <blockquote class="rv"><div class="av"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#dcebfa"/><path d="M12 64c2-12 10-17 20-17s18 5 20 17z" fill="#4aa3ee"/><circle cx="32" cy="30" r="13" fill="#f6d2b4"/><path d="M19 28c0-9 6-14 13-14s13 5 13 14c-3-4-8-6-13-6s-10 2-13 6z" fill="#3a2a22"/><circle cx="27" cy="31" r="1.6" fill="#3a2a22"/><circle cx="37" cy="31" r="1.6" fill="#3a2a22"/><path d="M28 36q4 3 8 0" stroke="#c0705a" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></div><p class="photo-note"><b>写真撮影 · 児童</b>コメントを寄せる児童の、自然な笑顔の写真が必要です。<small>現在のイラストは仮の表示です。</small></p><q class="placeholder">[児童のコメント：実際の声を一言]</q><cite class="placeholder">[〇年生]</cite></blockquote>
+      <blockquote class="rv d1"><div class="av"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#e3e8ee"/><circle cx="32" cy="26" r="11" fill="#c6ced8"/><path d="M12 60c3-12 11-18 20-18s17 6 20 18z" fill="#c6ced8"/></svg><span class="tg">P16e</span></div><p class="photo-note"><b>写真撮影 · 先生</b>コメントを寄せる先生・ハウスペアレントの、自然な笑顔の写真が必要です。<small>現在のイラストは仮の表示です。</small></p><q class="placeholder">[先生・ハウスペアレントのコメント：実際の声を一言]</q><cite class="placeholder">[役職・氏名]</cite></blockquote>
       <blockquote class="rv d2"><div class="av"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#e3e8ee"/><circle cx="32" cy="26" r="11" fill="#c6ced8"/><path d="M12 60c3-12 11-18 20-18s17 6 20 18z" fill="#c6ced8"/></svg><span class="tg">P16f</span></div><q class="placeholder">[エアウィーヴ担当者のコメント：子どもたちへの想いを一言]</q><cite class="placeholder">株式会社エアウィーヴ　[部署・氏名]</cite></blockquote>
     </div>
   </div>
