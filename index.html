@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>JINIS × airweave</title>
-<meta name="description" content="JINIS × airweave エアウィーヴ特集ページ（提案用モック・日本語版）">
+<meta name="description" content="JINIS × airweave 神石インターナショナルスクールの毎日を支えるエアウィーヴ。寮のマットレス・掛け布団と食堂のシートクッションをご紹介します。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -257,15 +257,78 @@ body.notags .duo .av .tg{display:none}
 .awlink b{display:block;font:600 10.5px var(--lat);letter-spacing:.12em;color:var(--navy);text-transform:uppercase;margin-bottom:2px}
 .awlink span{display:block;font-size:13px;line-height:1.75}
 .draft,.shot,.memo,.tagbtn,.duo .av .tg{display:none!important}
+
+/* JINIS editorial shell: aligned with the boarding section. */
+:root{--navy:#26478e;--navy-d:#1d3670;--sky:#52a6c8;--pale:#edf3f8;--ink:#1b1b1b;--gray:#f5f6f7}
+body{letter-spacing:.035em}
+a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52a6c8;outline-offset:5px}
+.skip{position:absolute;top:-80px;left:16px;z-index:100;background:#fff;color:var(--navy);padding:10px 20px}
+.skip:focus{top:12px}
+.hd{top:0;padding:0 20px;align-items:flex-start;gap:32px}
+.hd .logo{width:164px;flex:0 0 164px;padding:20px 18px 16px}
+.hd nav{display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:clamp(15px,1.8vw,28px);padding-top:24px}
+.hd nav a{font-size:12px;font-weight:700;letter-spacing:0;line-height:2;text-shadow:0 1px 8px #0008;white-space:nowrap}
+.hd nav a:hover{text-decoration:underline;text-underline-offset:7px}
+.hd .languages{font-size:13px;font-weight:400;border-left:1px solid #ffffff70;padding-left:20px}
+.hd .languages a{font-weight:400}.hd .languages span{color:#fff;margin:0 9px}
+.mobile-menu{display:none}
+.hero{height:600px;min-height:540px;overflow:visible}
+.hero>img{transform:none;animation:none;object-position:50% 44%}
+.hero::after{background:linear-gradient(180deg,#08183050,transparent 35%,#08183038)}
+.hero .in{justify-content:center;padding:48px 20px 60px}
+.hero .kick{font-family:var(--serif);font-size:23px;letter-spacing:.08em;width:min(390px,85vw);border-top:1px solid #ffffffa0;border-bottom:1px solid #ffffffa0;padding:10px 0;font-weight:400}
+.hero h1.lockup{margin:26px 0 20px;gap:24px}
+.hero h1.lockup img{height:52px!important;filter:brightness(0) invert(1)}
+.hero h1.lockup img.awl{height:38px!important}
+.hero .ja{font-size:17px;font-weight:500;letter-spacing:.1em}
+.life-menu{position:absolute;left:0;bottom:-25px;z-index:25;width:225px;color:#fff;background:var(--navy)}
+.life-menu summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;font-size:18px;letter-spacing:.04em}
+.life-menu summary::-webkit-details-marker,.mobile-menu summary::-webkit-details-marker{display:none}
+.life-menu summary::after{content:'+';font-size:23px;font-weight:300;color:#9cb2df}
+.life-menu[open] summary::after{content:'−'}
+.life-menu .links{position:absolute;top:100%;left:0;width:100%;background:var(--navy);padding:8px 24px 18px;box-shadow:0 12px 22px #0002}
+.life-menu a{display:block;padding:8px 0;font-size:13px;text-decoration:none;border-top:1px solid #ffffff30}
+.life-menu a:hover{text-decoration:underline;text-underline-offset:4px}
+.crumb{padding-top:16px;font-size:11px;min-height:70px;letter-spacing:.03em}.crumb a{text-decoration:none}
+.crumb span{margin:0 12px;color:#999}
+.sec{padding:clamp(76px,8vw,110px) 0}
+.h2{font-weight:500;letter-spacing:.08em}.en{color:var(--navy);letter-spacing:.16em}
+.frame{font-weight:500;font-size:clamp(23px,3vw,32px)}
+.pills a{border-radius:0;border-color:var(--line);padding:8px 28px}
+.why h3{font-weight:500}.why .n{color:var(--navy);font-size:30px}
+@media(min-width:1500px){.hero{height:680px}}
+@media(max-width:1100px){
+ .hd{padding:0 16px}.hd .logo{width:134px;flex-basis:134px;padding:16px}
+ .hd nav{gap:15px}.hd nav a{font-size:11px}.hd .languages{padding-left:12px}
+}
+@media(max-width:900px){
+ .hd nav{display:none}.hd .logo{width:104px;flex-basis:104px;padding:12px}
+ .mobile-menu{display:block;margin-top:18px}.mobile-menu summary{list-style:none;cursor:pointer;background:var(--navy);color:#fff;padding:9px 16px;font:500 12px var(--serif);letter-spacing:.1em;border:1px solid #ffffff60}
+ .mobile-menu .links{display:block;position:absolute;right:16px;top:64px;width:min(320px,calc(100vw - 32px));background:#fff;padding:14px 24px;box-shadow:0 10px 32px #0003}
+ .hd .mobile-menu a{display:block;color:var(--navy);text-shadow:none;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px;text-decoration:none}
+ .hero{height:570px;min-height:0}.hero .in{padding-top:90px}.hero .kick{font-size:20px;width:310px}
+}
+@media(max-width:600px){
+ .hero{height:560px}.hero>img{object-position:61% 50%}.hero .in{padding-top:70px}
+ .hero .kick{width:280px;font-size:18px}.hero h1.lockup{gap:16px;margin:24px 0 18px}
+ .hero h1.lockup img{height:29px!important}.hero h1.lockup img.awl{height:22px!important}.hero .ja{font-size:14px}
+ .life-menu{width:190px;bottom:-22px}.life-menu summary{font-size:15px;padding:12px 20px}
+ .crumb{padding:42px 0 0;min-height:86px;font-size:10px;text-align:left;line-height:1.9}.crumb span{margin:0 6px}
+ .frame{padding:16px 24px;letter-spacing:.1em}.pills{gap:8px}.pills a{padding:6px 14px;font-size:12px}
+}
+
 </style>
 
 <div class="draft">提案用モック ｜ <b>黄色タグ</b> = 撮影予定・差し替え（P番号は撮影リストと対応）｜ <b style="color:#6fdc9a">緑タグ</b> = JINIS提供写真</div>
 
+<a class="skip" href="#main">本文へスキップ</a>
 <header class="hd">
-  <a class="logo" href="https://jinis.jp/" target="_blank" rel="noopener"><img src="assets/jinis_logo02.svg" alt="JINIS 神石インターナショナルスクール"></a>
-  <nav><a>学校について</a><a>教育について</a><a>LIFE at JINIS</a><a>入学案内</a><a>アクセス</a></nav>
+  <a class="logo" href="https://jinis.jp/" target="_blank" rel="noopener"><img src="assets/jinis_logo_vertical.svg" alt="JINIS 神石インターナショナルスクール"></a>
+  <nav aria-label="メインナビゲーション"><a href="https://jinis.jp/school/">学校について</a><a href="https://jinis.jp/education/">教育について</a><a href="https://jinis.jp/life/">LIFE at JINIS</a><a href="https://jinis.jp/plan/">入学案内</a><a href="https://jinis.jp/access/">アクセス</a><a href="https://jinis.jp/video/">VIDEO of JINIS</a><a href="https://jinis.jp/newsletter/">ニュースレター</a><a href="https://jinis.jp/contact/">お問い合わせ</a><div class="languages"><a href="https://jinis.jp/en/" lang="en">EN</a><span>/</span><a href="https://jinis.jp/" aria-label="日本語">JP</a></div></nav>
+  <details class="mobile-menu"><summary>MENU ＋</summary><nav class="links" aria-label="モバイルナビゲーション"><a href="https://jinis.jp/school/">学校について</a><a href="https://jinis.jp/education/">教育について</a><a href="https://jinis.jp/life/">LIFE at JINIS</a><a href="https://jinis.jp/plan/">入学案内</a><a href="https://jinis.jp/access/">アクセス</a><a href="https://jinis.jp/video/">VIDEO of JINIS</a><a href="https://jinis.jp/newsletter/">ニュースレター</a><a href="https://jinis.jp/contact/">お問い合わせ</a><a href="https://jinis.jp/en/" lang="en">EN / English</a></nav></details>
 </header>
 
+<main id="main">
 <section class="hero ph">
   <img src="assets/jd_hero.webp" alt="寮のベッドで本を読む子ども">
   <span class="shot ok" style="top:auto;bottom:62px;left:auto;right:12px">JINIS提供 · JINIS250523_04198<small>※寝具がエアウィーヴか要確認（枕は対象外）</small></span>
@@ -274,9 +337,9 @@ body.notags .duo .av .tg{display:none}
     <h1 class="lockup"><span class="sr">JINIS × airweave</span><img src="assets/jinis_logo02.svg" alt="JINIS Jinseki International School"><i>×</i><img class="awl" src="assets/aw_logo.png" alt="airweave"></h1>
     <div class="ja">エアウィーヴ特集</div>
   </div>
-  <div class="side">Life at JINIS <span>+</span></div>
+  <details class="life-menu"><summary>Life at JINIS</summary><div class="links"><a href="https://jinis.jp/life/environment/">周辺環境</a><a href="https://jinis.jp/life/boarding/">ボーディング</a><a href="https://jinis.jp/life/weekend/">WEEKEND</a><a href="#main" aria-current="page">エアウィーヴ特集</a></div></details>
 </section>
-<div class="wrap crumb"><a href="#">ホーム</a>　&gt;　Life at JINIS　&gt;　ボーディング　&gt;　エアウィーヴ特集</div>
+<nav class="wrap crumb" aria-label="パンくずリスト"><a href="https://jinis.jp/">ホーム</a><span>›</span><a href="https://jinis.jp/life/">Life at JINIS</a><span>›</span><a href="https://jinis.jp/life/boarding/">ボーディング</a><span>›</span>エアウィーヴ特集</nav>
 
 <!-- INTRO -->
 <section class="sec">
@@ -383,6 +446,7 @@ body.notags .duo .av .tg{display:none}
 </div>
 
 
+</main>
 <footer>
   <div class="wrap">
     <div class="fl"><img src="assets/jinis_logo02.svg" alt="JINIS"></div>
