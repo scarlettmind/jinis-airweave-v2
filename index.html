@@ -317,6 +317,10 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
  .frame{padding:16px 24px;letter-spacing:.1em}.pills{gap:8px}.pills a{padding:6px 14px;font-size:12px}
 }
 
+/* Visible production notes on photos that need a new shoot. */
+.shot:not(.ok){display:block!important;top:12px;left:12px;max-width:min(360px,calc(100% - 24px));padding:9px 12px;background:#fff3ba;color:#493800;border-left:3px solid #c69119;border-radius:0;box-shadow:0 2px 10px #0002;font-family:var(--serif);font-size:12px;line-height:1.6;letter-spacing:.03em}
+.shot:not(.ok) small{margin-top:3px;font-size:11px;line-height:1.65;font-weight:400}
+@media(max-width:600px){.shot:not(.ok){top:8px;left:8px;max-width:calc(100% - 16px);padding:7px 9px;font-size:11px}.shot:not(.ok) small{font-size:10px}}
 </style>
 
 <div class="draft">提案用モック ｜ <b>黄色タグ</b> = 撮影予定・差し替え（P番号は撮影リストと対応）｜ <b style="color:#6fdc9a">緑タグ</b> = JINIS提供写真</div>
@@ -373,7 +377,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
     <div class="center rv"><div class="en">Why airweave</div>
       <h2 class="h2 whyh">世界のアスリートの眠りを支えてきた寝具を、<br>子どもたちの毎晩にも。</h2></div>
     <div class="pair">
-      <figure class="rv"><div class="ph"><img src="assets/visit_dorm_bed.webp" alt="JINIS寮のベッドに敷かれたエアウィーヴ"><span class="shot">P02 · 差し替え<small>JINIS寮で使用中のマットレス（現在は訪問時の写真）</small></span></div>
+      <figure class="rv"><div class="ph"><img src="assets/visit_dorm_bed.webp" alt="JINIS寮のベッドに敷かれたエアウィーヴ"><span class="shot">P02 · 再撮影・差し替え<small>寮で使用中のエアウィーヴのマットレス。製品と寮の様子が分かるカットを撮影。（現在：訪問時の仮写真）</small></span></div>
         <figcaption>JINISの寮で、毎晩使われているエアウィーヴ。</figcaption></figure>
       <figure class="rv d1 chart"><div class="ph"><img src="assets/aw_plos_deepsleep.webp" alt="エアウィーヴと一般的な低反発マットレスの深い睡眠時間の比較（PLOS ONE掲載）"></div>
         <figcaption><b>Deeper sleep, measured</b> — published in <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0197521" target="_blank" rel="noopener">PLOS ONE</a> (2018)<small>成人を対象とした研究結果です。</small></figcaption></figure>
@@ -388,12 +392,12 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
     <div class="center rv"><div class="en">Eating &amp; Sleeping</div><h2 class="h2">食べる時間も、眠る時間も。</h2></div>
     <div class="scenes">
       <figure class="scene rv">
-        <div class="ph"><img src="assets/jd_dine.webp" alt="食堂で食事をする子どもたち" style="object-position:55% 50%"><span class="shot">P13 · 撮影必要<small>食堂の椅子にシートクッション＋食事中の子ども（現在は仮：JINIS提供 250523_00954）</small></span></div>
+        <div class="ph"><img src="assets/jd_dine.webp" alt="食堂で食事をする子どもたち" style="object-position:55% 50%"><span class="shot">P13 · 追加撮影<small>食堂の椅子のシートクッションと、食事中の子どもが一緒に写るカット。（現在：JINIS提供の仮写真）</small></span></div>
         <div class="meta"><span class="en">Eating</span><span>食堂 · シートクッション</span></div>
         <p>みんなで囲む食卓に、心地よいひとときを。</p>
       </figure>
       <figure class="scene rv d1">
-        <div class="ph"><img src="assets/visit_dorm_bed_front.webp" alt="寮のベッド" style="object-position:50% 60%"><span class="shot">P10 · 差し替え<small>朝の寮室・ベッド全景（現在は訪問時の写真）</small></span></div>
+        <div class="ph"><img src="assets/visit_dorm_bed_front.webp" alt="寮のベッド" style="object-position:50% 60%"><span class="shot">P10 · 再撮影・差し替え<small>朝の自然光で、寮室とベッド全体を撮影。マットレス・掛け布団が分かる構図。（現在：訪問時の仮写真）</small></span></div>
         <div class="meta"><span class="en">Sleeping</span><span>寮 · マットレス・掛け布団</span></div>
         <p>一日の終わりに、安心して眠れる場所を。</p>
       </figure>
@@ -415,7 +419,7 @@ a:focus-visible,summary:focus-visible,button:focus-visible{outline:3px solid #52
 
 <!-- 08 NIGHT (ending) -->
 <section class="band">
-  <div class="ph"><img src="assets/jd_hero.webp" alt="ベッドで本を読む子ども" style="object-position:62% 45%;filter:brightness(.72)"><span class="shot">P18 · 撮影必要<small>夜、ベッドに横になる子ども（提供フォルダに別カットなし・現在はトップと同じ写真）</small></span></div>
+  <div class="ph"><img src="assets/jd_hero.webp" alt="ベッドで本を読む子ども" style="object-position:62% 45%;filter:brightness(.72)"><span class="shot">P18 · 追加撮影<small>夜、ベッドで休む子どもの別カット。落ち着いた照明で撮影。（現在：トップ写真を流用）</small></span></div>
   <div class="cap rv"><div class="en">Good night, Jinseki</div><p>おやすみなさい。<br>また明日。</p></div>
 </section>
 
